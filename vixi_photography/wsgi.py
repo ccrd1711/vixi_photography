@@ -1,5 +1,5 @@
 """
-WSGI config for vixiphotography project.
+WSGI config for vixi_photography project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vixiphotography.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vixi_photography.settings')
 
 application = get_wsgi_application()
