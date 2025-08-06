@@ -20,5 +20,5 @@ from gallery.views import my_gallery
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gallery/', my_gallery, name='my_gallery'),
+    path('', my_gallery, name='my_gallery'),
 ]
