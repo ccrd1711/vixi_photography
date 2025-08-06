@@ -25,8 +25,12 @@ SECRET_KEY = 'django-insecure-er9*m68j_jc-e0$mnh44pj5e@(#mls3#rfdvm3@ky0uq-z9147
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['vixi-photography.herokuapp.com',
-                 '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    'vixi-photography.herokuapp.com',
+    'vixi-photography-98e8a4e90f4d.herokuapp.com',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
