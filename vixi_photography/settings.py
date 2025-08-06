@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-er9*m68j_jc-e0$mnh44pj5e@(#mls3#rfdvm3@ky0uq-z9147'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com',
+                 '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'vixiphotography.urls'
+ROOT_URLCONF = 'vixi_photography.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'vixiphotography.wsgi.application'
+WSGI_APPLICATION = 'vixi_photography.wsgi.application'
 
 
 # Database
