@@ -1,15 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Gallery, Photo 
 
 # Create your views here.
 def my_gallery(request):
-    data = [
-        {
-            "title": g.title,
-            "sport": g.sport,
-            "event_date": g.event_date.isoformat() if g.event_date else None,
-            "photos": [p.image_url for p in g.photos.all()],
-        }
-        for g in Gallery.objects.prefetch_related('photos')[:10]
-    ]
-    return JsonResponse({"galleries": data})
+    galleries = Gallery.objects.all().order_by("-id")
+    return render(request, "gallery/index.html", {"galleries": galleries})
