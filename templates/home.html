@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vixi Photography</title>
-  <a href="{% url 'register' %}">Register</a> | 
-  <a href="{% url 'login' %}">Login</a>
-
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
   <h1>Welcome to Vixi Photography</h1>
-  <p><a href="{% url 'gallery_index' %}">View Gallery</a></p>
+
+  <div class="roulette-box">
+    <img src="{% static 'images/testimage1.jpg' %}" class="active" alt="Photo 1">
+    <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
+    <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
+  </div>
+
+  <script src="{% static 'js/roulette.js' %}"></script>
 </body>
 </html>
+
