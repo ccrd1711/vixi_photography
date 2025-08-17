@@ -23,4 +23,5 @@ urlpatterns = [
     path("", home, name="home"), #landing page?
     path("gallery/", include("gallery.urls")),
     path("accounts/", include("accounts.urls")),
+    path("orders/", include("orders.urls")), 
 ]

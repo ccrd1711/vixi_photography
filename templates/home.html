@@ -15,6 +15,12 @@
     <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
     <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
   </div>
+ 
+  <form action="{% url 'checkout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Book a mini-shoot (£50 test)</button>
+  </form>
+
 
   <script src="{% static 'js/roulette.js' %}"></script>
 </body>
