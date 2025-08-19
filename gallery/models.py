@@ -21,6 +21,7 @@ class Photo(models.Model):
     image_url = models.URLField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField(default=False)
+    price_pence = models.PositiveIntegerField(default=9000)
 
     class Meta:
         ordering = ['-uploaded_at']
