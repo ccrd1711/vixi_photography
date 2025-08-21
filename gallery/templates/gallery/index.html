@@ -1,20 +1,42 @@
+{% load static %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>My Gallery</title>
+  <title>Gallery • Vixi Photography</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-  <h1>Welcome to my gallery</h1>
+<body class="page">
+  <header class="nav">
+    <a class="brand" href="{% url 'home' %}">Vixi</a>
+    <nav class="nav-links">
+      <a href="{% url 'cart' %}">Basket <span class="badge">{{ cart_count|default:0 }}</span></a>
+    </nav>
+  </header>
 
-  {% if galleries %}
-    <ul>
-      {% for g in galleries %}
-        <li>{{ g.name }} ({{ g.photos.count }} photos)</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No galleries yet. <a href="/admin/">Add one in admin</a>.</p>
-  {% endif %}
+  <main class="container">
+    <h1>Gallery</h1>
+
+    {% if photos %}
+      <div class="grid">
+        {% for photo in photos %}
+          <article class="card">
+            <img src="{{ photo.image_url }}" alt="{{ photo.title|default:'Photo' }}" class="card-img">
+            <div class="card-body">
+              <h3 class="card-title">{{ photo.title|default:"Untitled" }}</h3>
+              <p class="price">{{ photo.price_display }}</p>
+              <form action="{% url 'add_to_cart' photo_id=photo.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button class="btn" type="submit" aria-label="Add to basket">Add to basket</button>
+              </form>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No photos yet.</p>
+    {% endif %}
+  </main>
 </body>
 </html>

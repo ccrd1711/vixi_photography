@@ -26,6 +26,9 @@ class Photo(models.Model):
     class Meta:
         ordering = ['-uploaded_at']
 
+    def price_display(self):
+        return f"£{self.price_pence / 100:.2f}"
+
     def __str__(self):
         return self.title or f'Photo #{self.pk}'
     

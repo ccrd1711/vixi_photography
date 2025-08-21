@@ -9,11 +9,10 @@ from . import cart as sc
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-PRODUCT_NAME = "Mini-shoot booking"  # rename????
-UNIT_AMOUNT = 5000  # 50GBP - check
+PRODUCT_NAME = "Mini-shoot booking"
+UNIT_AMOUNT = 5000  # £50.00
 
-
-# ---- CART VIEWS ----
+# ---- CART ----
 def cart_view(request):
     items = []
     total = 0
@@ -34,20 +33,17 @@ def cart_view(request):
     }
     return render(request, "orders/cart.html", ctx)
 
-
 def add_to_cart(request, photo_id):
     sc.add(request.session, photo_id, qty=1)
     messages.success(request, "Added to basket.")
     return redirect(request.POST.get("next") or "cart")
-
 
 def remove_from_cart(request, photo_id):
     sc.remove(request.session, photo_id)
     messages.info(request, "Removed from basket.")
     return redirect("cart")
 
-
-# ---- STRIPE CHECKOUT ----
+# ---- STRIPE (kept from your version) ----
 def checkout(request):
     session = stripe.checkout.Session.create(
         mode='payment',
@@ -65,15 +61,12 @@ def checkout(request):
     )
     return redirect(session.url, code=303)
 
-
 def checkout_success(request):
     return render(request, "orders/success.html")
-
 
 def checkout_cancel(request):
     return render(request, "orders/cancel.html")
 
-
-# ---- BOOKING REQUEST (placeholderv- not created yet ) ----
+# ---- BOOKING PLACEHOLDER ----
 def book_request(request):
     return render(request, "orders/book_request.html")
