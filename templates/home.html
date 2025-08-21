@@ -1,36 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vixi Photography</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-  <header class="nav">
-    <a class="brand" href="{% url 'home' %}">Vixi</a>
-    <nav class="nav-links">
-      <a href="{% url 'gallery_index' %}">Gallery</a>
-      <a href="{% url 'cart' %}">Basket <span class="badge">{{ cart_count|default:0 }}</span></a>
-    </nav>
-  </header>
-  
-  <h1>Welcome to Vixi Photography</h1>
+{% extends 'base.html' %}
+{% block title %}Home • Vixi Photography{% endblock %}
 
-  <div class="roulette-box">
-    <img src="{% static 'images/testimage1.jpg' %}" class="active" alt="Photo 1">
-    <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
-    <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
-  </div>
- 
-  <form action="{% url 'checkout' %}" method="post">
+{% block content %}
+<h1>Welcome to Vixi Photography</h1>
+
+<div class="roulette-box">
+  <img src="{% static 'images/testimage1.jpg' %}" class="active" alt="Photo 1">
+  <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
+  <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
+</div>
+
+<form action="{% url 'checkout' %}" method="post">
   {% csrf_token %}
   <button type="submit">Book a mini-shoot (£50 test)</button>
-  </form>
+</form>
 
-
-  <script src="{% static 'js/roulette.js' %}"></script>
-</body>
-</html>
-
+<script src="{% static 'js/roulette.js' %}"></script>
+{% endblock %}

@@ -1,3 +1,8 @@
-<h2>Payment cancelled</h2>
-<p>No charge was made. You can try again anytime.</p>
-<p><a href="{% url 'home' %}">Back to home</a></p>
+{% extends 'base.html' %}
+{% block title %}Payment Cancelled • Vixi Photography{% endblock %}
+
+{% block content %}
+<h1>Payment Cancelled</h1>
+<p>Your payment was cancelled. No money has been taken.</p>
+<a class="btn" href="{% url 'cart' %}">Return to Basket</a>
+{% endblock %}

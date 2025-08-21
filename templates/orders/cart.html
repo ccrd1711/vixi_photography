@@ -1,60 +1,37 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Your Basket • Vixi Photography</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body class="page">
-  <header class="nav">
-    <a class="brand" href="{% url 'home' %}">Vixi</a>
-    <nav class="nav-links">
-      <a href="{% url 'gallery_index' %}">Gallery</a>
-      <a href="{% url 'cart' %}">Basket <span class="badge">{{ cart_count|default:0 }}</span></a>
-    </nav>
-  </header>
+{% extends 'base.html' %}
+{% block title %}Your Basket • Vixi Photography{% endblock %}
 
-  <main class="container">
-    <h1>Your Basket</h1>
+{% block content %}
+<h1>Your Basket</h1>
 
-    {% if items %}
-      <table class="cart-table">
-        <thead>
-          <tr><th>Photo</th><th>Qty</th><th>Line total</th><th></th></tr>
-        </thead>
-        <tbody>
-        {% for it in items %}
-          <tr>
-            <td>{{ it.photo.title|default:"Untitled" }}</td>
-            <td class="t-center">{{ it.qty }}</td>
-            <td class="t-right">{{ it.line_total_display }}</td>
-            <td class="t-right">
-              <form action="{% url 'remove_from_cart' it.photo.id %}" method="post">
-                {% csrf_token %}
-                <button class="btn btn-secondary" type="submit">Remove</button>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td class="t-right"><strong>Total</strong></td>
-            <td class="t-right"><strong>{{ total_display }}</strong></td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
+{% if items %}
+  <table class="cart-table">
+    <thead><tr><th>Photo</th><th>Qty</th><th>Line total</th><th></th></tr></thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td>{{ it.photo.title|default:"Untitled" }}</td>
+        <td class="t-center">{{ it.qty }}</td>
+        <td class="t-right">{{ it.line_total_display }}</td>
+        <td class="t-right">
+          <form action="{% url 'remove_from_cart' it.photo.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-secondary" type="submit">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr><td></td><td class="t-right"><strong>Total</strong></td><td class="t-right"><strong>{{ total_display }}</strong></td><td></td></tr>
+    </tfoot>
+  </table>
 
-      <div class="actions">
-        <a class="btn" href="{% url 'book_request' %}">Book the Photographer</a>
-        <a class="btn" href="{% url 'checkout' %}">Checkout (test)</a>
-      </div>
-    {% else %}
-      <p>Your basket is empty.</p>
-    {% endif %}
-  </main>
-</body>
-</html>
+  <div class="actions">
+    <a class="btn" href="{% url 'book_request' %}">Book the Photographer</a>
+    <a class="btn" href="{% url 'checkout' %}">Checkout (test)</a>
+  </div>
+{% else %}
+  <p>Your basket is empty.</p>
+{% endif %}
+{% endblock %}
