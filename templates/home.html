@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+  <header class="nav">
+    <a class="brand" href="{% url 'home' %}">Vixi</a>
+    <nav class="nav-links">
+      <a href="{% url 'gallery_index' %}">Gallery</a>
+      <a href="{% url 'cart' %}">Basket <span class="badge">{{ cart_count|default:0 }}</span></a>
+    </nav>
+  </header>
+  
   <h1>Welcome to Vixi Photography</h1>
 
   <div class="roulette-box">
