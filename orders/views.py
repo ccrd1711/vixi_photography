@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
@@ -6,13 +7,15 @@ import stripe
 
 from gallery.models import Photo
 from . import cart as sc
+from .forms import BookingRequestForm
+from .models import BookingRequest
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 PRODUCT_NAME = "Mini-shoot booking"
 UNIT_AMOUNT = 5000  # £50.00
 
-# ---- CART ----
+# CART
 def cart_view(request):
     items = []
     total = 0
@@ -43,7 +46,7 @@ def remove_from_cart(request, photo_id):
     messages.info(request, "Removed from basket.")
     return redirect("cart")
 
-# ---- STRIPE (kept from your version) ----
+# STRIPE
 def checkout(request):
     session = stripe.checkout.Session.create(
         mode='payment',
@@ -67,6 +70,44 @@ def checkout_success(request):
 def checkout_cancel(request):
     return render(request, "orders/cancel.html")
 
-# ---- BOOKING PLACEHOLDER ----
+# BOOKING PLACEHOLDER
 def book_request(request):
-    return render(request, "orders/book_request.html")
+    if request.method == "POST":
+        form = BookingRequestForm(request.POST)
+        if form.is_valid():
+            br = form.save(commit=False)
+            br.user = request.user
+            br.save()
+            messages.success(request, "Booking request submitted.")
+            return redirect("my_bookings")
+    else:
+        form = BookingRequestForm()
+    return render(request, "orders/booking_form.html", {"form": form, "mode": "create"}) 
+
+@login_required
+def my_bookings(request):
+    bookings = BookingRequest.objects.filter(user=request.user)
+    return render(request, "orders/my_bookings.html", {"bookings": bookings})
+
+@login_required
+def edit_booking(request, pk):
+    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    if request.method == "POST":
+        form = BookingRequestForm(request.POST, instance=br)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Booking request updated.")
+            return redirect("my_bookings")
+        else:
+            form = BookingRequestForm(instance=br)
+        return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
+    
+@login_required
+def delete_booking(request, pk):
+    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    if request.method == "POST":
+        br.status = "cancelled"
+        br.save(update_fields=["status"])
+        messages.info(request, "Booking request cancelled.")
+        return redirect("my_bookings")
+    return render(request, "orders/booking_confirm_delete.html", {"booking": br})

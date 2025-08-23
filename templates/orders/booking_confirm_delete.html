@@ -1,0 +1,11 @@
+(% extends base.html % )
+{% block title %}Confirm Booking Cancellation • Vixi Photography{% endblock %}
+{% block content %}
+<h1>Cancel Booking</h1>
+<p>Are you sure you want to cancel your booking for <strong>{{ booking.event_date }}</strong> at <strong>{{ booking.location }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn" type="submit">Yes, Cancel Booking</button>
+    <a class="btn btn-secondary" href="{% url 'my_bookings' %}">No, Go Back</a>
+</form>
+{% endblock %}

@@ -31,3 +31,24 @@ class OrderItem(models.Model):
     @property
     def subtotal_pence(self):
         return self.qty * self.price_each_pence
+
+class BookingRequest(models.Model):
+    STATUS = [
+        ("new", "New"),
+        ("review", "In Review"),
+        ("accepted", "Accepted"),
+        ("rejected", "Rejected"),
+        ("cancelled", "Cancelled"),
+    ]
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='booking_requests')
+    event_date = models.DateField()
+    location = models.CharField(max_length=200)
+    details = models.TextField(blank=True)
+    status = models.CharField(max_length=10, choices=STATUS, default='new')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user} - {self.event_date} - {self.location}"

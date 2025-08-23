@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ mode == "edit" and "Edit Booking" or "Book the Photographer" }} • Vixi Photography{% endblock %}
+{% block content %}
+
+<h1>{{ mode == "edit" and "Edit Booking" or "Book the Photographer" }}</h1>
+<form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">{{ mode == "edit" and "Save Changes" or "Submit Request" }}</button>
+    <a class="btn btn-secondary" href="{% url 'my_bookings' %}">My Bookings</a>
+</form>
+{% endblock %}
