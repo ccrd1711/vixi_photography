@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
-import stripe
-
+from .utils import create_order_from_session
 from gallery.models import Photo
 from . import cart as sc
 from .forms import BookingRequestForm
 from .models import BookingRequest
+import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -48,6 +48,12 @@ def remove_from_cart(request, photo_id):
 
 # STRIPE
 def checkout(request):
+    # Order from cart
+    order = create_order_from_session(request.user, request.session)
+    if not order:
+        messages.error(request, "Your basket is empty.")
+        return redirect("cart")
+
     session = stripe.checkout.Session.create(
         mode='payment',
         payment_method_types=['card'],
@@ -65,9 +71,17 @@ def checkout(request):
     return redirect(session.url, code=303)
 
 def checkout_success(request):
+    if request.user.is_authenticated:
+        latest = Order.obects.filter(user=request.user, status='submitted').order_by('-created').first()
+        if latest:
+            latest.status = 'paid'
+            latest.save(update_fields=['status'])
+    sc.clear(request.session)
+    messages.success(request, "Payment successful! Thank you for your order.")
     return render(request, "orders/success.html")
 
 def checkout_cancel(request):
+    messages.info(request, "Payment cancelled. You can try again from your basket.")
     return render(request, "orders/cancel.html")
 
 # BOOKING PLACEHOLDER
