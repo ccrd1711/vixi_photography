@@ -8,6 +8,7 @@ from gallery.models import Photo
 from . import cart as sc
 from .forms import BookingRequestForm
 from .models import BookingRequest
+from .models import Order
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -125,3 +126,8 @@ def delete_booking(request, pk):
         messages.info(request, "Booking request cancelled.")
         return redirect("my_bookings")
     return render(request, "orders/booking_confirm_delete.html", {"booking": br})
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, "orders/my_orders.html", {"orders": orders})

@@ -23,14 +23,17 @@ class Order(models.Model):
         return f"£{self.total_pence/100:.2f}"
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
+    order = models.ForeignKey("Order", related_name="items", on_delete=models.CASCADE)
+    photo = models.ForeignKey("gallery.Photo", on_delete=models.PROTECT)
     qty = models.PositiveIntegerField(default=1)
     price_each_pence = models.PositiveIntegerField()
 
     @property
     def subtotal_pence(self):
         return self.qty * self.price_each_pence
+    
+    def __str__(self):
+        return f"{self.photo} x {self.qty}"
 
 class BookingRequest(models.Model):
     STATUS = [
