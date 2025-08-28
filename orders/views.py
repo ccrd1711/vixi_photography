@@ -107,16 +107,22 @@ def my_bookings(request):
 
 @login_required
 def edit_booking(request, pk):
-    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    br = get_object_or_404(
+        BookingRequest, 
+        pk=pk, 
+        user=request.user, 
+        status__in=["new", "review"]
+    )
     if request.method == "POST":
         form = BookingRequestForm(request.POST, instance=br)
         if form.is_valid():
             form.save()
             messages.success(request, "Booking request updated.")
             return redirect("my_bookings")
-        else:
-            form = BookingRequestForm(instance=br)
-        return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
+    else:
+        form = BookingRequestForm(instance=br)
+    
+    return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
     
 @login_required
 def delete_booking(request, pk):
