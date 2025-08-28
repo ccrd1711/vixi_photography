@@ -14,7 +14,7 @@
             <td>{{ b.get_status_display }}</td>
             <td class="t-right">
                 {% if b.status in "new review" %}
-                    <a class="btn href="{% url 'edit_booking' b.pk %}">Edit</a>
+                    <a class="btn" href="{% url 'edit_booking' b.pk %}">Edit</a>
                     <a class="btn btn-secondary" href="{% url 'delete_booking' b.pk %}">Cancel</a>
                 {% else %} - {% endif %}
             </td>
