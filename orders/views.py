@@ -86,6 +86,7 @@ def checkout_cancel(request):
     return render(request, "orders/cancel.html")
 
 # BOOKING PLACEHOLDER
+@login_required(login_url='/accounts/login/')
 def book_request(request):
     if request.method == "POST":
         form = BookingRequestForm(request.POST)
