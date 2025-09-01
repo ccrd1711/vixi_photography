@@ -73,7 +73,7 @@ def checkout(request):
 
 def checkout_success(request):
     if request.user.is_authenticated:
-        latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created').first()
+        latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created_at').first()
         if latest:
             latest.status = 'paid'
             latest.save(update_fields=['status'])
