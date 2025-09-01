@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}My Profile • Vixi{% endblock %}
+{% block content %}
+<h1>My Profile</h1>
+<p><strong>Name:</strong> {{ profile.display_name|default:user.username }}</p>
+<p><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+<p><strong>Phone:</strong> {{ profile.phone|default:"—" }}</p>
+<p><strong>Address:</strong><br>{{ profile.address|linebreaksbr|default:"—" }}</p>
+<a class="btn" href="{% url 'profile_edit' %}">Edit Profile</a>
+{% endblock %}
