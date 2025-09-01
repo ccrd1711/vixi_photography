@@ -13,12 +13,20 @@
       <a href="{% url 'gallery_index' %}">Gallery</a>
       <a href="{% url 'cart' %}">Basket ({{ cart_count|default:0 }})</a>
       {% if user.is_authenticated %}
-        <a href="{% url 'my_orders' %}">My Orders</a>
-        <a href="{% url 'my_bookings' %}">My Bookings</a>
-        <a href="{% url 'logout' %}">Logout</a>
-      {% else %}
-        <a href="{% url 'login' %}">Login</a>
-      {% endif %}
+  <div class="profile">
+    <button class="avatar" id="avatarBtn" aria-haspopup="menu" aria-expanded="false">
+      {{ user.username|first|upper }}
+    </button>
+    <div class="dropdown" id="profileMenu" role="menu" aria-label="Profile menu">
+      <a href="{% url 'my_orders' %}" role="menuitem">My Orders</a>
+      <a href="{% url 'my_bookings' %}" role="menuitem">My Bookings</a>
+      <a href="{% url 'logout' %}" role="menuitem">Logout</a>
+    </div>
+  </div>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+{% endif %}
+
     </nav>
   </header>
 
@@ -27,5 +35,7 @@
   </main>
 
   <footer class="footer">© 2025 Vixi Photography</footer>
+
+  <script src="{% static 'js/nav.js' %}"></script>
 </body>
 </html>
