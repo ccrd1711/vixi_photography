@@ -4,7 +4,6 @@
 
 <h1>My Orders</h1>
 
-
 {% for o in orders %}
     <div class="order-card">
         <h2>Order #{{ o.id }} - {{ o.created_at|date:"Y-m-d H:i" }}</h2>
@@ -13,14 +12,12 @@
         <table class="cart-table">
             <thead><tr><th>ID</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
             <tbody>
-                {% for o in orders %}
                 <tr>
                     <td>{{ o.id }}</td>
                     <td>{{ o.created_at|date:"Y-m-d H:i" }}</td>
                     <td>{{ o.status }}</td>
-                    <td>£{{ o.total_pence|floatformat:2|divisibleby:100 }}</td>
+                    <td>{{ o.total_display }}</td>
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
         <p><strong>Total: {{ o.total_display }}</strong></p>
@@ -28,4 +25,5 @@
 {% empty %}
     <p>You have no orders yet.</p>
 {% endfor %}
+
 {% endblock %}
