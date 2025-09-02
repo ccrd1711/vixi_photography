@@ -23,7 +23,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <p><strong>Total: £{{ o.total_pence|floatformat:2|divisibleby:100 }}</strong></p>
+        <p><strong>Total: {{ o.total_display }}</strong></p>
     </div>
 {% empty %}
     <p>You have no orders yet.</p>

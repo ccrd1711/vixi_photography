@@ -21,6 +21,10 @@ class Order(models.Model):
 
     def total_display(self):
         return f"£{self.total_pence/100:.2f}"
+    
+    @property
+    def total_pounds(self):
+        return self.total_pence / 100
 
 class OrderItem(models.Model):
     order = models.ForeignKey("Order", related_name="items", on_delete=models.CASCADE)
@@ -31,6 +35,10 @@ class OrderItem(models.Model):
     @property
     def subtotal_pence(self):
         return self.qty * self.price_each_pence
+    
+    @property
+    def subtotal_display(self):
+        return f"£{self.subtotal_pence/100:.2f}"
     
     def __str__(self):
         return f"{self.photo} x {self.qty}"
