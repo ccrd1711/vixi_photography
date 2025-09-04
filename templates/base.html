@@ -3,24 +3,35 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- Font --> 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap">
+
+  <!-- Font Awesome kit -->
+  <script src="https://kit.fontawesome.com/cae9254a7d.js" crossorigin="anonymous"></script>
+
   <title>{% block title %}Vixi Photography{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body class="page">
+
+<body class="page {% block body_class %}{% endblock %}">
   <header class="nav">
-    <a class="brand" href="{% url 'home' %}">Vixi</a>
+    <a class="brand" href="{% url 'home' %}">VIXI</a>
     <nav class="nav-links">
-      <a href="{% url 'gallery_index' %}">Gallery</a>
-      <a href="{% url 'cart' %}">Basket ({{ cart_count|default:0 }})</a>
+      <a href="{% url 'gallery_index' %}">GALLERY</a>
+      <a href="{% url 'cart' %}">BASKET ({{ cart_count|default:0 }})</a>
       {% if user.is_authenticated %}
   <div class="profile">
     <button class="avatar" id="avatarBtn" aria-haspopup="menu" aria-expanded="false">
       {{ user.username|first|upper }}
     </button>
     <div class="dropdown" id="profileMenu" role="menu" aria-label="Profile menu">
-      <a href="{% url 'profile' %}" role="menuitem">Profile</a>
-      <a href="{% url 'my_orders' %}" role="menuitem">My Orders</a>
-      <a href="{% url 'my_bookings' %}" role="menuitem">My Bookings</a>
+      <a href="{% url 'profile' %}" role="menuitem">PROFILE</a>
+      <a href="{% url 'my_orders' %}" role="menuitem">ORDERS</a>
+      <a href="{% url 'my_bookings' %}" role="menuitem">BOOKINGS</a>
       <a href="{% url 'logout' %}" role="menuitem">Logout</a>
     </div>
   </div>
@@ -35,7 +46,15 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="footer">© 2025 Vixi Photography</footer>
+  <footer class="footer">
+    <p>© 2025 Vixi Photography</p>
+    <div class="social-links">
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://x.com" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://youtube.com" target="_blank" aria-label="youtube"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
 
   <script src="{% static 'js/nav.js' %}"></script>
 </body>

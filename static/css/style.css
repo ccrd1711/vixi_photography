@@ -1,17 +1,17 @@
 body {
-  font-family: system-ui, Arial, sans-serif;
+  background: linear-gradient(to bottom, #64748B 0%, #000 100%);
+  color: #fff; 
+  font-family: Marcellus, Arial, sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   background: #f9f9f9;
 }
 
 h1 {
+  font-family: Marcellus, Arial, sans-serif;
+  text-align: center;
   margin-bottom: 2rem;
+  font-size: 44px;
 }
 
 /*Nav bar profile icon stuff*/
@@ -31,12 +31,48 @@ h1 {
 }
 .dropdown a:hover { background: #f6f6f6; }
 .dropdown.open { display: block; }
+.dropdown.show { display:block; }
+
+/* Hero section */
+.full-cover {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero {
+  /* background: #647488; */
+  background: linear-gradient(to bottom, #64748B 0%, #000 100%);
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: 0;
+}
+
+.hero h1 {
+  margin-bottom: 20px;
+}
+
+.hero .roulette-box {
+  margin: 0 auto 20px;
+  max-width: 600px;
+}
+
+.hero img {
+  display: block;
+  margin: 0 auto;
+}
+
+.hero .btn {
+  margin-top: 16px;
+}
 
 /* Home screen roulette */
 .roulette-box {
   position: relative;
   width: 500px;
   height: 300px;
+  margin: 0 auto 20px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   background: #fff;
@@ -58,23 +94,24 @@ h1 {
 /* layout */
 .page { 
   margin:0; 
-  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial; 
-  background:#fff; 
+  background: transparent; 
   color:#111; 
 }
 
 .container { 
   max-width:1100px; 
   margin:0 auto; 
-  padding:20px; 
+  /* padding:20px; */
 }
 
 /* nav */
 .nav { 
+  background: #647488;
+  color: fff;
   display:flex; 
   justify-content:space-between; 
   align-items:center; padding:12px 20px; 
-  border-bottom:1px solid #eee; 
+  /* border-bottom:1px solid #eee; */
 }
 .brand { 
   font-weight:700; 
@@ -221,3 +258,38 @@ body.dark .grid img {
   gap:12px; 
 }
 
+/* Footer styling */
+.footer { 
+  border-top: 1px solid var(--border);
+  padding: 20px 4vw;
+  text-align: center;
+  background: #000;
+  color: #fff;
+}
+
+.social-links {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 22px;
+}
+
+.social-links a {
+  text-decoration: none;
+  transition: transform .2s;
+  color: gold;
+}
+
+.social-links a:hover {
+  transform: scale(1.2);
+}
+
+.social-links i {
+  font-size: 22px;
+  color: var(--fg);
+}
+
+.social-links a:hover i {
+  color: var(--brand);
+}

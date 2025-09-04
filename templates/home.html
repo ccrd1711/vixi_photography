@@ -4,16 +4,17 @@
 {% block title %}Home • Vixi Photography{% endblock %}
 
 {% block content %}
-<h1>Welcome to Vixi Photography</h1>
+<section class="hero full-cover">
+  <h1>VIXI PHOTOGRAPHY</h1>
 
-<div class="roulette-box">
-  <img src="{% static 'images/testimage1.jpg' %}" class="active" alt="Photo 1">
-  <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
-  <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
-</div>
+  <div class="roulette-box">
+    <img src="{% static 'images/testimage1.jpg' %}" class="active" alt="Photo 1">
+    <img src="{% static 'images/testimage2.jpg' %}" alt="Photo 2">
+    <img src="{% static 'images/testimage3.jpg' %}" alt="Photo 3">
+  </div>
 
-<a class="btn" href="{% url 'book_request' %}">Book a mini-shoot</a>
-
+  <a class="btn" href="{% url 'book_request' %}">Book a mini-shoot</a>
+</section>
 
 <script src="{% static 'js/roulette.js' %}"></script>
 {% endblock %}
