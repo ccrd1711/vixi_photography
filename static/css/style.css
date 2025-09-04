@@ -103,36 +103,41 @@ h1 {
 
 /* Black & white toggle */
 
-.gallery-page { 
-  min-height: 100vh;
-  width: 100%;
-  transition: background .2s ease, color .2s ease; 
-}
-
-.gallery-page .gallery-toolbar {
-  display:flex; 
-  align-items:center; 
-  justify-content:space-between; 
-  margin-bottom:12px;
-}
-
-.gallery-page.dark { 
+/* Full page background + text */
+body.dark, body.dark.page { 
   background:#0c0e13; 
   color:#e7e9ee; 
 }
 
-.gallery-page.dark a { 
+/* Links */
+body.dark a { 
   color:#e7e9ee; 
 }
 
-.gallery-page.dark .grid img { 
+/* Nav + footer */
+body.dark .nav, 
+body.dark .footer { 
+  background:#0c0e13; 
+  border-color:#222; 
+}
+
+/* Cards */
+body.dark .card { 
+  background:#10131a; 
+  border:1px solid #222; 
+}
+
+/* Captions */
+body.dark .card-body { 
+  background:#000; 
+  color:#fff; 
+}
+
+/* Photos */
+body.dark .grid img { 
   filter: grayscale(100%); 
 }
 
-body.dark .card-body {
-  background: #000;
-  color: #fff;
-}
 
 /* grid & cards */
 .grid { 
