@@ -1,4 +1,5 @@
 from django.db import models
+from django.templatetags.static import static
 
 # Create your models here.
 class Gallery(models.Model):
@@ -22,6 +23,7 @@ class Photo(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField(default=False)
     price_pence = models.PositiveIntegerField(default=9000)
+    download_path = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-uploaded_at']
@@ -32,3 +34,6 @@ class Photo(models.Model):
     def __str__(self):
         return self.title or f'Photo #{self.pk}'
     
+    @property
+    def download_url(self):
+        return static(self.download_path) if self.download_path else ""

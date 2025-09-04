@@ -136,5 +136,19 @@ def delete_booking(request, pk):
 
 @login_required
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    orders = Order.objects.filter(user=request.user).order_by('-created_at').prefetch_related("items", "items__photo")
     return render(request, "orders/my_orders.html", {"orders": orders})
+
+@login_required
+def download_item(request, item_id: int):
+    item = get_object_or_404(
+        OrderItem.objects.select_related("order", "photo"),
+        pk=item_id,
+        order__user=request.user,
+        order__status="paid",
+    )
+    url = item.photo.download_url
+    if not url:
+        messages.error(request, "Download unavailable for this item.")
+        return redirect("my_orders")
+    return redirect(url)

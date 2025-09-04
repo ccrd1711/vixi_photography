@@ -15,6 +15,6 @@ class GalleryAdmin(admin.ModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'gallery', 'uploaded_at', 'is_featured')
+    list_display = ('__str__', 'gallery', 'uploaded_at', 'is_featured', 'download_path')
     list_filter = ('is_featured', 'gallery')
     search_fields = ('title', 'caption')
