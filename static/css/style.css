@@ -109,7 +109,7 @@ h1 {
 }
 .gallery-page.dark { background:#0c0e13; color:#e7e9ee; }
 .gallery-page.dark a { color:#e7e9ee; }
-.gallery-page.dark .gallery-grid img { filter: grayscale(100%); }
+.gallery-page.dark .grid img { filter: grayscale(100%); }
 
 
 /* grid & cards */
