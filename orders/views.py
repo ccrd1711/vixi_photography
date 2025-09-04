@@ -8,7 +8,7 @@ from gallery.models import Photo
 from . import cart as sc
 from .forms import BookingRequestForm
 from .models import BookingRequest
-from .models import Order
+from .models import Order, OrderItem
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
