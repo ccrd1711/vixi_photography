@@ -99,6 +99,19 @@ h1 {
   border:1px solid #ddd; 
 }
 
+/* Gallery */
+
+/* Black & white toggle */
+
+.gallery-page { transition: background .2s ease, color .2s ease; }
+.gallery-page .gallery-toolbar{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+}
+.gallery-page.dark { background:#0c0e13; color:#e7e9ee; }
+.gallery-page.dark a { color:#e7e9ee; }
+.gallery-page.dark .gallery-grid img { filter: grayscale(100%); }
+
+
 /* grid & cards */
 .grid { 
   display:grid; 
