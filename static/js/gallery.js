@@ -7,7 +7,7 @@
 
   function apply(mode){
     const dark = mode === 'dark';
-    document.body.classList.toggle('dark', dark);
+    root.classList.toggle('dark', dark);
     btn.textContent = dark ? '☀' : '☾';
     btn.setAttribute('aria-pressed', String(dark));
   }

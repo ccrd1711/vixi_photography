@@ -104,6 +104,8 @@ h1 {
 /* Black & white toggle */
 
 .gallery-page { 
+  min-height: 100vh;
+  width: 100%;
   transition: background .2s ease, color .2s ease; 
 }
 
