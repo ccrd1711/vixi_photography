@@ -144,7 +144,7 @@ h1 {
 
 /* nav */
 .nav { 
-  background: #647488;
+  background: transparent;
   color: fff;
   display:flex; 
   justify-content:space-between; 
@@ -305,7 +305,7 @@ body.dark .grid img {
   border-top: 1px solid var(--border);
   padding: 20px 4vw;
   text-align: center;
-  background: #000;
+  background: transparent;
   color: #fff;
 }
 
