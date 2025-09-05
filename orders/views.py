@@ -22,7 +22,7 @@ def cart_view(request):
     total = 0
     for photo_id, qty in request.session.get('cart', {}).items():
         photo = get_object_or_404(Photo, pk=int(photo_id))
-        line_total = qty * photo.price_pence
+        line_total = int(qty) * photo.price_pence
         total += line_total
         items.append({
             "photo": photo,
@@ -38,13 +38,31 @@ def cart_view(request):
     return render(request, "orders/cart.html", ctx)
 
 def add_to_cart(request, photo_id):
-    sc.add(request.session, photo_id, qty=1)
-    messages.success(request, "Added to basket.")
+    if request.method != "POST":
+        return redirect("gallery_index")
+
+    cart = request.session.get("cart", {})
+    key = str(photo_id)
+    cart[key] = int(cart.get(key, 0)) + 1
+
+    request.session["cart"] = cart
+    request.session.modified = True
+
+    photo = get_object_or_404(Photo, pk=photo_id)
+    messages.success(request, f"Added {photo.title or 'photo'} to basket.")
     return redirect(request.POST.get("next") or "cart")
 
 def remove_from_cart(request, photo_id):
-    sc.remove(request.session, photo_id)
-    messages.info(request, "Removed from basket.")
+    cart = request.session.get("cart", {})
+    key = str(photo_id)
+    if key in cart:
+        if int(cart[key]) > 1:
+            cart[key] = int(cart[key]) - 1
+        else:
+            del cart[key]
+        request.session["cart"] = cart
+        request.session.modified = True
+        messages.info(request, "Removed from basket.")
     return redirect("cart")
 
 # STRIPE
