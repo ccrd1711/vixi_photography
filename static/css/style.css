@@ -15,7 +15,8 @@ h1 {
   font-family: Marcellus, Arial, sans-serif;
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 44px;
+  font-size: 50px;
+  color: #f88604;
 }
 
 /*Nav bar profile icon stuff*/
@@ -33,7 +34,7 @@ h1 {
   display: grid; 
   place-items: center; 
   font-weight: 700; 
-  background: #fff; 
+  background: #f88604; 
   cursor: pointer;
 }
 
@@ -42,7 +43,7 @@ h1 {
   right: 0; 
   top: 46px; 
   min-width: 180px; 
-  background: #fff;
+  background: #f88604;
   border: 1px solid #eee; 
   border-radius: 10px; 
   box-shadow: 0 8px 20px rgba(0,0,0,.06);
@@ -131,7 +132,7 @@ h1 {
 /* layout */
 .page { 
   margin:0;  
-  color:#111; 
+  /* color:#111;*/ 
 }
 
 .container { 
@@ -251,11 +252,9 @@ body.dark .grid img {
 .btn { 
   display:inline-block; 
   padding:8px 12px; 
-  border:1px solid #111; 
-  border-radius:10px; 
-  background:#fff; 
   text-decoration:none; 
   cursor:pointer; 
+  color: #f88604;
 }
 
 .btn:hover { 
@@ -264,6 +263,12 @@ body.dark .grid img {
 
 .btn-secondary { 
   border-color:#bbb; 
+}
+
+.act-btn {
+  background: #f88604;
+  color: #fff;
+  padding: 10px 20px;
 }
 
 /* cart table */
@@ -314,7 +319,7 @@ body.dark .grid img {
 .social-links a {
   text-decoration: none;
   transition: transform .2s;
-  color: gold;
+  color: #f88604;
 }
 
 .social-links a:hover {
