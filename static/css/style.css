@@ -256,6 +256,7 @@ body.dark .grid img {
   text-decoration:none; 
   cursor:pointer; 
   color: #f88604;
+  background: transparent;
 }
 
 .btn:hover { 
@@ -270,6 +271,9 @@ body.dark .grid img {
   background: transparent;
   color: #f88604;
   padding: 10px 20px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .home-btn {

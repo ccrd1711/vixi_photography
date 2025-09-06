@@ -9,8 +9,14 @@ def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Your account has been created! You can now log in.")
+            user = form.save()
+            raw_password = form.cleaned_data["password1"]
+            user = authenticate(request, username=user.username, password=raw_password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Account created. Welcome!")
+                return redirect("gallery_index")
+            messages.info(request, "Account created. Please log in.")
             return redirect("login")
     else:
         form = UserCreationForm()
