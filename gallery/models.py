@@ -16,24 +16,30 @@ class Gallery(models.Model):
         return self.title
     
 class Photo(models.Model):
-    gallery = models.ForeignKey(Gallery, related_name='photos', on_delete=models.CASCADE)
-    title = models.CharField(max_length=120, blank=True)
-    capton = models.TextField(blank=True)
-    image_url = models.URLField()
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    is_featured = models.BooleanField(default=False)
-    price_pence = models.PositiveIntegerField(default=9000)
-    download_path = models.CharField(max_length=255, blank=True)
-
-    class Meta:
-        ordering = ['-uploaded_at']
-
-    def price_display(self):
-        return f"£{self.price_pence / 100:.2f}"
+    title = models.CharField(max_length=200)
+    price_pence = models.PositiveIntegerField(default=0)
+    # existing field you already have for colour/original
+    download_path = models.CharField(max_length=255, blank=True)        # e.g. "downloads/photo1_colour.jpg"
+    # NEW: optional B/W path
+    download_path_bw = models.CharField(max_length=255, blank=True)     # e.g. "downloads/photo1_bw.jpg"
 
     def __str__(self):
-        return self.title or f'Photo #{self.pk}'
-    
+        return self.title
+
     @property
     def download_url(self):
-        return static(self.download_path) if self.download_path else ""
+        # keep for backwards compat (colour)
+        return self._resolve_static(self.download_path)
+
+    def download_url_for(self, variant: str):
+        if variant == "bw" and self.download_path_bw:
+            return self._resolve_static(self.download_path_bw)
+        return self._resolve_static(self.download_path or "")
+
+    @staticmethod
+    def _resolve_static(path: str) -> str:
+        if not path:
+            return ""
+        if path.startswith(("http://", "https://", "/")):
+            return path
+        return static(path)

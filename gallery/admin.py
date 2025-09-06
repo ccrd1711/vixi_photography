@@ -1,20 +1,13 @@
 from django.contrib import admin
 from .models import Gallery, Photo
 
-# Register your models here.
-
-class PhotoInline(admin.TabularInline):
-    model = Photo
-    extra = 1
-
 @admin.register(Gallery)
 class GalleryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'sport', 'event_date', 'created_at')
-    search_fields = ('title', 'sport')
-    inlines = [PhotoInline]
+    list_display = ("title", "sport", "event_date", "created_at")
+    search_fields = ("title", "sport")
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'gallery', 'uploaded_at', 'is_featured', 'download_path')
-    list_filter = ('is_featured', 'gallery')
-    search_fields = ('title', 'caption')
+    list_display = ("id", "title", "price_pence", "download_path", "download_path_bw")
+    search_fields = ("title",)
+    fields = ("title", "price_pence", "download_path", "download_path_bw")

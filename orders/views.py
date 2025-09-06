@@ -5,10 +5,8 @@ from django.conf import settings
 from django.urls import reverse
 from .utils import create_order_from_session
 from gallery.models import Photo
-from . import cart as sc
 from .forms import BookingRequestForm
-from .models import BookingRequest
-from .models import Order, OrderItem
+from .models import BookingRequest, Order, OrderItem
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -20,13 +18,23 @@ UNIT_AMOUNT = 5000  # £50.00
 def cart_view(request):
     items = []
     total = 0
-    for photo_id, qty in request.session.get('cart', {}).items():
+    for key, val in request.session.get('cart', {}).items():
+        if ":" in key:
+            photo_id, variant = key.split(":", 1)
+        else:
+            photo_id, variant = key, "colour"
+
+        qty = int(val.get("qty", val)) if isinstance(val, dict) else int(val)
+        if qty <= 0:
+            continue
+
         photo = get_object_or_404(Photo, pk=int(photo_id))
-        line_total = int(qty) * photo.price_pence
+        line_total = qty * photo.price_pence
         total += line_total
         items.append({
             "photo": photo,
             "qty": qty,
+            "variant": variant,
             "line_total_pence": line_total,
             "line_total_display": f"£{line_total/100:.2f}",
         })
@@ -41,31 +49,38 @@ def add_to_cart(request, photo_id):
     if request.method != "POST":
         return redirect("gallery_index")
 
+    variant = request.POST.get("variant", "colour")
+    key = f"{photo_id}:{variant}"
+
     cart = request.session.get("cart", {})
-    key = str(photo_id)
-    cart[key] = int(cart.get(key, 0)) + 1
+    current = cart.get(key)
+    if isinstance(current, dict):
+        qty = int(current.get("qty", 0)) + 1
+    elif current is not None:
+        qty = int(current) + 1
+    else:
+        qty = 1
+    cart[key] = {"qty": qty, "variant": variant}
 
     request.session["cart"] = cart
     request.session.modified = True
 
     photo = get_object_or_404(Photo, pk=photo_id)
-    messages.success(request, f"Added {photo.title or 'photo'} to basket.")
+    messages.success(request, f"Added {photo.title or 'photo'} ({'B/W' if variant=='bw' else 'Colour'}) to basket.")
     return redirect(request.POST.get("next") or "cart")
 
 def remove_from_cart(request, photo_id):
     cart = request.session.get("cart", {})
-    key = str(photo_id)
-    if key in cart:
-        if int(cart[key]) > 1:
-            cart[key] = int(cart[key]) - 1
-        else:
-            del cart[key]
-        request.session["cart"] = cart
-        request.session.modified = True
-        messages.info(request, "Removed from basket.")
+    keys = [k for k in list(cart.keys()) if k.split(":", 1)[0] == str(photo_id)]
+    for k in keys:
+        del cart[k]
+    request.session["cart"] = cart
+    request.session.modified = True
+    messages.info(request, "Removed from basket.")
     return redirect("cart")
 
-@login_required(login_url='/accounts/login/')
+# STRIPE
+@login_required(login_url="/accounts/login/")
 def checkout(request):
     order = create_order_from_session(request.user, request.session)
     if not order:
@@ -95,7 +110,8 @@ def checkout_success(request):
         if latest:
             latest.status = 'paid'
             latest.save(update_fields=['status'])
-    sc.clear(request.session)
+    request.session["cart"] = {}
+    request.session.modified = True
     messages.success(request, "Payment successful! Thank you for your order.")
     return render(request, "orders/success.html")
 
@@ -103,6 +119,7 @@ def checkout_success(request):
 def checkout_cancel(request):
     messages.info(request, "Payment cancelled. You can try again from your basket.")
     return render(request, "orders/cancel.html")
+
 
 @login_required(login_url='/accounts/login/')
 def book_request(request):
@@ -139,7 +156,6 @@ def edit_booking(request, pk):
             return redirect("my_bookings")
     else:
         form = BookingRequestForm(instance=br)
-    
     return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
     
 @login_required
@@ -162,7 +178,6 @@ def my_orders(request):
     )
     return render(request, "orders/my_orders.html", {"orders": orders})
 
-
 @login_required
 def download_item(request, item_id: int):
     item = get_object_or_404(
@@ -171,7 +186,7 @@ def download_item(request, item_id: int):
         order__user=request.user,
         order__status="paid",
     )
-    url = item.photo.download_url
+    url = item.photo.download_url_for(item.variant)
     if not url:
         messages.error(request, "Download unavailable for this item.")
         return redirect("my_orders")

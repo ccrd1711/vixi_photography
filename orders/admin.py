@@ -18,8 +18,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("id", "order", "photo", "qty", "price_each_pence")
-    list_filter = ("order__status",)
+    list_display = ("id", "order", "photo", "variant", "qty", "price_each_pence")
+    list_filter = ("variant", "order__status",)
     search_fields = ("order__id", "photo__title", "order__user__username")
 
 @admin.register(BookingRequest)

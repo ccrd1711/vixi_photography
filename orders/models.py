@@ -21,27 +21,31 @@ class Order(models.Model):
 
     def total_display(self):
         return f"£{self.total_pence/100:.2f}"
-    
+
     @property
     def total_pounds(self):
         return self.total_pence / 100
 
 class OrderItem(models.Model):
+    VARIANTS = (("colour", "Colour"), ("bw", "Black & White"))
+
     order = models.ForeignKey("Order", related_name="items", on_delete=models.CASCADE)
     photo = models.ForeignKey("gallery.Photo", on_delete=models.PROTECT)
     qty = models.PositiveIntegerField(default=1)
     price_each_pence = models.PositiveIntegerField()
+    # NEW
+    variant = models.CharField(max_length=10, choices=VARIANTS, default="colour")
 
     @property
     def subtotal_pence(self):
         return self.qty * self.price_each_pence
-    
+
     @property
     def subtotal_display(self):
         return f"£{self.subtotal_pence/100:.2f}"
-    
+
     def __str__(self):
-        return f"{self.photo} x {self.qty}"
+        return f"{self.photo} x {self.qty} ({self.get_variant_display()})"
 
 class BookingRequest(models.Model):
     STATUS = [

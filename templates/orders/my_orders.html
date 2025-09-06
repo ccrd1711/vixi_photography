@@ -11,20 +11,17 @@
 
     <table class="cart-table">
       <thead>
-        <tr><th>Photo</th><th>Qty</th><th>Line Total</th><th>Actions</th></tr>
+        <tr><th>Photo</th><th>Variant</th><th>Qty</th><th>Line Total</th><th>Actions</th></tr>
       </thead>
       <tbody>
         {% for item in o.items.all %}
           <tr>
             <td>{{ item.photo }}</td>
+            <td>{{ item.get_variant_display }}</td>
             <td>{{ item.qty }}</td>
             <td>{{ item.subtotal_display }}</td>
             <td>
-              {% if o.status == "paid" %}
-                <a href="{% url 'orderitem_download' item.id %}" target="_blank" rel="noopener">Download</a>
-              {% else %}
-                <span>Available after payment</span>
-              {% endif %}
+              <a href="{% url 'orderitem_download' item.id %}" target="_blank" rel="noopener">Download</a>
             </td>
           </tr>
         {% endfor %}
