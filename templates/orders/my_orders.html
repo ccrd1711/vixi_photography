@@ -21,7 +21,7 @@
             <td>{{ item.subtotal_display }}</td>
             <td>
               {% if o.status == "paid" %}
-                <a href="{% url 'orderitem_download' item.id %}">Download</a>
+                <a href="{% url 'orderitem_download' item.id %}" target="_blank" rel="noopener">Download</a>
               {% else %}
                 <span>Available after payment</span>
               {% endif %}

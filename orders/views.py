@@ -65,9 +65,8 @@ def remove_from_cart(request, photo_id):
         messages.info(request, "Removed from basket.")
     return redirect("cart")
 
-# STRIPE
+@login_required(login_url='/accounts/login/')
 def checkout(request):
-    # Order from cart
     order = create_order_from_session(request.user, request.session)
     if not order:
         messages.error(request, "Your basket is empty.")
@@ -89,6 +88,7 @@ def checkout(request):
     )
     return redirect(session.url, code=303)
 
+@login_required(login_url='/accounts/login/')
 def checkout_success(request):
     if request.user.is_authenticated:
         latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created_at').first()
@@ -99,11 +99,11 @@ def checkout_success(request):
     messages.success(request, "Payment successful! Thank you for your order.")
     return render(request, "orders/success.html")
 
+@login_required(login_url='/accounts/login/')
 def checkout_cancel(request):
     messages.info(request, "Payment cancelled. You can try again from your basket.")
     return render(request, "orders/cancel.html")
 
-# BOOKING PLACEHOLDER
 @login_required(login_url='/accounts/login/')
 def book_request(request):
     if request.method == "POST":
@@ -154,8 +154,14 @@ def delete_booking(request, pk):
 
 @login_required
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at').prefetch_related("items", "items__photo")
+    orders = (
+        Order.objects
+        .filter(user=request.user, status="paid")
+        .order_by('-created_at')
+        .prefetch_related("items", "items__photo")
+    )
     return render(request, "orders/my_orders.html", {"orders": orders})
+
 
 @login_required
 def download_item(request, item_id: int):
