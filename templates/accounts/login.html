@@ -6,7 +6,7 @@
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <a class="act-btn" type="submit" href="{% url 'gallery_index' %}">LOGIN</a>
+  <button class="act-btn" type="submit">LOGIN</button>
 </form>
 <p>Don’t have an account? <a href="{% url 'register' %}">Register here</a>.</p>
 {% endblock %}
