@@ -8,6 +8,7 @@ from gallery.models import Photo
 from .forms import BookingRequestForm
 from .models import BookingRequest, Order, OrderItem
 import stripe
+from django.templatetags.static import static
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
