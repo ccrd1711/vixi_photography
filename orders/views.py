@@ -79,6 +79,23 @@ def remove_from_cart(request, photo_id):
     messages.info(request, "Removed from basket.")
     return redirect("cart")
 
+def remove_one(request, photo_id, variant):
+    cart = request.session.get("cart", {})
+    key = f"{photo_id}:{variant}"
+    val = cart.get(key)
+
+    if val is not None:
+        qty = int(val.get("qty", val)) - 1 if isinstance(val, dict) else int(val) - 1
+        if qty > 0:
+            cart[key] = {"qty": qty, "variant": variant}
+        else:
+            cart.pop(key, None)
+        request.session["cart"] = cart
+        request.session.modified = True
+        messages.info(request, "Removed one item.")
+
+    return redirect("cart")
+
 # STRIPE
 @login_required(login_url="/accounts/login/")
 def checkout(request):

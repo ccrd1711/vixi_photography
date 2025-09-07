@@ -9,19 +9,21 @@
     <thead><tr><th>Photo</th><th>Qty</th><th>Line total</th><th></th></tr></thead>
     <tbody>
       {% for it in items %}
-      <tr>
-        <td>{{ it.photo.title|default:"Untitled" }}</td>
-        <td class="t-center">{{ it.qty }}</td>
-        <td class="t-right">{{ it.line_total_display }}</td>
-        <td class="t-right">
-          <form action="{% url 'remove_from_cart' it.photo.id %}" method="post">
-            {% csrf_token %}
-            <button class="btn btn-secondary" type="submit">Remove</button>
-          </form>
-        </td>
-      </tr>
+        <tr>
+          <td>
+            {{ it.photo.title }}
+            {% if it.variant == 'bw' %}(B&W){% else %}(CLR){% endif %}
+          </td>
+          <td class="t-center">{{ it.qty }}</td>
+          <td class="t-right">{{ it.line_total_display }}</td>
+          <td class="t-right">
+            <a class="btn btn-secondary"
+              href="{% url 'remove_one' it.photo.id it.variant %}">Remove one</a>
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
+
     <tfoot>
       <tr><td></td><td class="t-right"><strong>Total</strong></td><td class="t-right"><strong>{{ total_display }}</strong></td><td></td></tr>
     </tfoot>
