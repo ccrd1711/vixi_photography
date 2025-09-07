@@ -10,4 +10,4 @@ class GalleryAdmin(admin.ModelAdmin):
 class PhotoAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "price_pence", "image_url", "download_path", "download_path_bw")
     search_fields = ("title", "price_pence", "image_url", "download_path", "download_path_bw")
-    fields = ("title",)
+    fields = ("title", "price_pence", "image_url", "download_path", "download_path_bw",)
