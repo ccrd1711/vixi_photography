@@ -14,7 +14,7 @@
     <div class="grid">
   {% for photo in photos %}
     <article class="card">
-      <img src="{{ photo.image_url }}" alt="{{ photo.title|default:'Photo' }}" class="card-img">
+      <img src="{% static photo.image_url %}" alt="{{ photo.title|default:'Photo' }}" class="card-img">
       <div class="card-body">
         <h3 class="card-title">{{ photo.title|default:"Untitled" }}</h3>
         <p class="price">{{ photo.price_display }}</p>

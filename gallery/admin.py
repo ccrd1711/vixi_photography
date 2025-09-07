@@ -8,6 +8,6 @@ class GalleryAdmin(admin.ModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "price_pence", "download_path", "download_path_bw")
-    search_fields = ("title",)
-    fields = ("title", "price_pence", "download_path", "download_path_bw")
+    list_display = ("id", "title", "price_pence", "image_url", "download_path", "download_path_bw")
+    search_fields = ("title", "price_pence", "image_url", "download_path", "download_path_bw")
+    fields = ("title",)
