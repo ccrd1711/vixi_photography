@@ -186,8 +186,14 @@ def download_item(request, item_id: int):
         order__user=request.user,
         order__status="paid",
     )
-    url = item.photo.download_url_for(item.variant)
-    if not url:
+    if item.variant == "bw" and getattr(item.photo, "download_path_bw", ""):
+        path = item.photo.download_path_bw
+    else:
+        path = item.photo.download_path  # your existing colour/original path
+
+    if not path:
         messages.error(request, "Download unavailable for this item.")
         return redirect("my_orders")
+
+    url = path if path.startswith(("http://", "https://", "/")) else static(path)
     return redirect(url)

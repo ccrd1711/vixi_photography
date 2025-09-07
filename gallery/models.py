@@ -18,17 +18,14 @@ class Gallery(models.Model):
 class Photo(models.Model):
     title = models.CharField(max_length=200)
     price_pence = models.PositiveIntegerField(default=0)
-    # existing field you already have for colour/original
-    download_path = models.CharField(max_length=255, blank=True)        # e.g. "downloads/photo1_colour.jpg"
-    # NEW: optional B/W path
-    download_path_bw = models.CharField(max_length=255, blank=True)     # e.g. "downloads/photo1_bw.jpg"
+    download_path = models.CharField(max_length=255, blank=True)        # "downloads/photo1_colour.jpg"
+    download_path_bw = models.CharField(max_length=255, blank=True)     # "downloads/photo1_bw.jpg"
 
     def __str__(self):
         return self.title
 
     @property
     def download_url(self):
-        # keep for backwards compat (colour)
         return self._resolve_static(self.download_path)
 
     def download_url_for(self, variant: str):
