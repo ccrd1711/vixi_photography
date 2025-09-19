@@ -6,10 +6,12 @@ class BookingRequestForm(forms.ModelForm):
     class Meta:
         model = BookingRequest
         fields = ["event_date", "location", "details"]
+        widgets = {
+            "event_date": forms.DateInput(attrs={"type": "date"})
+        }
 
     def clean_event_date(self):
         date = self.cleaned_data["event_date"]
-        # Block ANY booking on the same date (new/review/accepted), excluding self when editing
         exists = BookingRequest.objects.filter(
             event_date=date, status__in=["new", "review", "accepted"]
         ).exclude(pk=self.instance.pk).exists()
