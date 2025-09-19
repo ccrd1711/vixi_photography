@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from gallery.models import Photo
+from django.db.models import Q
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -64,6 +65,13 @@ class BookingRequest(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['event_date'],
+                condition=Q(status__in=["new", "review", "accepted"]),
+                name='unique_booking_per_day_when_active',
+            )
+        ]
 
     def __str__(self):
         return f"{self.user} - {self.event_date} - {self.location}"

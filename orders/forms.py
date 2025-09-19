@@ -1,18 +1,18 @@
 from django import forms
-from django.utils import timezone
+from django.core.exceptions import ValidationError
 from .models import BookingRequest
 
 class BookingRequestForm(forms.ModelForm):
     class Meta:
         model = BookingRequest
-        fields = ['event_date', 'location', 'details']
-        widgets = {
-            'event_date': forms.DateInput(attrs={'type': 'date'}),
-            'details': forms.Textarea(attrs={'placeholder': 'Additional Details', 'rows': 4}),
-        }
+        fields = ["event_date", "location", "details"]
 
     def clean_event_date(self):
-        d = self.cleaned_data["event_date"]
-        if d < timezone.localdate():
-            raise forms.ValidationError("The event date cannot be in the past.")
-        return d
+        date = self.cleaned_data["event_date"]
+        # Block ANY booking on the same date (new/review/accepted), excluding self when editing
+        exists = BookingRequest.objects.filter(
+            event_date=date, status__in=["new", "review", "accepted"]
+        ).exclude(pk=self.instance.pk).exists()
+        if exists:
+            raise ValidationError("Sorry, that date is already booked. Please choose another.")
+        return date
