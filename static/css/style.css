@@ -173,6 +173,30 @@ h1 {
   padding: 20px; 
 }
 
+.gallery-intro {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.gallery-intro p {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 24px;
+}
+
+body.dark .gallery-intro {
+  background: #1a1d26;
+  color: #e7e9ee;
+}
+
+
 body.dark, body.dark.page { 
   background:#0c0e13; 
   color:#e7e9ee; 
@@ -235,15 +259,6 @@ body.dark .grid img {
   margin:4px 0 10px; 
 }
 
-/* buttons
-.btn { 
-  display:inline-block; 
-  padding:8px 12px; 
-  text-decoration:none; 
-  cursor:pointer; 
-  background: transparent;
-} */
-
 .btn:hover { 
   opacity:.9; 
   color: #f88604;
@@ -279,16 +294,6 @@ body.dark .grid img {
   width: 50px;
   font-size: 24px;
 }
-
-/* .act-btn {
-  background: transparent;
-  color: #f88604;
-  padding: 10px 20px;
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 24px;
-} */
 
 .basket-btn {
   background: #f88604;
