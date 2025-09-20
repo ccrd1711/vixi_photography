@@ -19,10 +19,10 @@
 
 <body class="page {% block body_class %}{% endblock %}">
   <header class="nav">
-    <a class="brand" href="{% url 'home' %}">VIXI</a>
+    <a class="brand btn" href="{% url 'home' %}">VIXI</a>
     <nav class="nav-links">
-      <a href="{% url 'gallery_index' %}">GALLERY</a>
-      <a href="{% url 'cart' %}">BASKET ({{ cart_count|default:0 }})</a>
+      <a href="{% url 'gallery_index' %}" class="btn">GALLERY</a>
+      <a href="{% url 'cart' %}" class="btn">BASKET ({{ cart_count|default:0 }})</a>
       {% if user.is_authenticated %}
   <div class="profile">
     <button class="avatar" id="avatarBtn" aria-haspopup="menu" aria-expanded="false">

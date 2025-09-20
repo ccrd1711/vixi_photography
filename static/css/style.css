@@ -33,8 +33,7 @@ h1 {
   border: 1px solid #ddd;
   display: grid; 
   place-items: center; 
-  font-weight: 700; 
-  background: #f88604; 
+  font-weight: 700;  
   cursor: pointer;
 }
 
@@ -155,6 +154,7 @@ h1 {
   font-weight:700; 
   text-decoration:none; 
   color:inherit; 
+  font-size: 26px;
 }
 
 .nav-links a { 
@@ -255,12 +255,12 @@ body.dark .grid img {
   padding:8px 12px; 
   text-decoration:none; 
   cursor:pointer; 
-  color: #f88604;
   background: transparent;
 }
 
 .btn:hover { 
   opacity:.9; 
+  color: #f88604;
 }
 
 .btn-secondary { 
