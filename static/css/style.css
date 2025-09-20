@@ -19,8 +19,6 @@ h1 {
   color: #f88604;
 }
 
-/*Nav bar profile icon stuff*/
-/* Profile dropdown */
 .profile { 
   position: relative; 
   display: inline-block; 
@@ -78,7 +76,6 @@ h1 {
 }
 
 .hero {
- /* background: linear-gradient(to bottom, #64748B 0%, #000 100%);*/
   background: transparent;
   color: #fff;
   text-align: center;
@@ -104,7 +101,6 @@ h1 {
   margin-top: 16px;
 }
 
-/* Home screen roulette */
 .roulette-box {
   position: relative;
   width: 900px;
@@ -128,20 +124,16 @@ h1 {
   opacity: 1;
 }
 
-/* layout */
 .page { 
   margin:0;  
-  /* color:#111;*/ 
 }
 
 .container { 
   max-width:1100px; 
   margin:0 auto; 
   flex: 1;
-  /* padding:20px; */
 }
 
-/* nav */
 .nav { 
   background: transparent;
   color: fff;
@@ -174,47 +166,35 @@ h1 {
   border:1px solid #ddd; 
 }
 
-/* Gallery */
-
-/* Black & white toggle */
-
-/* Full page background + text */
 body.dark, body.dark.page { 
   background:#0c0e13; 
   color:#e7e9ee; 
 }
 
-/* Links */
 body.dark a { 
   color:#e7e9ee; 
 }
 
-/* Nav + footer */
 body.dark .nav, 
 body.dark .footer { 
   background:#0c0e13; 
   border-color:#222; 
 }
 
-/* Cards */
 body.dark .card { 
   background:#10131a; 
   border:1px solid #222; 
 }
 
-/* Captions */
 body.dark .card-body { 
   background:#000; 
   color:#fff; 
 }
 
-/* Photos */
 body.dark .grid img { 
   filter: grayscale(100%); 
 }
 
-
-/* grid & cards */
 .grid { 
   display:grid; 
   grid-template-columns:repeat(2, 1fr);
@@ -292,7 +272,6 @@ body.dark .grid img {
   opacity: .9; 
 }
 
-/* cart table */
 .cart-table { 
   width:100%; 
   border-collapse:collapse; 
@@ -313,14 +292,12 @@ body.dark .grid img {
   text-align:center; 
 }
 
-/* actions row */
 .actions { 
   margin-top:16px; 
   display:flex; 
   gap:12px; 
 }
 
-/* Footer styling */
 .footer { 
   border-top: 1px solid var(--border);
   padding: 20px 4vw;
@@ -356,7 +333,6 @@ body.dark .grid img {
   color: var(--brand);
 }
 
-/* Sticky footer */
 html, body {
   height: 100%;
 }

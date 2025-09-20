@@ -63,15 +63,13 @@ class BookingRequest(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default='new')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # NEW FIELDS
+    deposit_pence = models.PositiveIntegerField(default=5000)  # £50
+    deposit_paid = models.BooleanField(default=False)
+    stripe_session_id = models.CharField(max_length=255, blank=True)
+
     class Meta:
         ordering = ['-created_at']
-        constraints = [
-            models.UniqueConstraint(
-                fields=['event_date'],
-                condition=Q(status__in=["new", "review", "accepted"]),
-                name='unique_booking_per_day_when_active',
-            )
-        ]
 
     def __str__(self):
         return f"{self.user} - {self.event_date} - {self.location}"

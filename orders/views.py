@@ -143,19 +143,58 @@ def checkout_cancel(request):
     return render(request, "orders/cancel.html")
 
 
-@login_required(login_url='/accounts/login/')
+@login_required
 def book_request(request):
     if request.method == "POST":
         form = BookingRequestForm(request.POST)
         if form.is_valid():
             br = form.save(commit=False)
             br.user = request.user
+            br.status = "review"   # keep in review until payment confirmed
             br.save()
-            messages.success(request, "Booking request submitted.")
-            return redirect("my_bookings")
+
+            # Create Stripe checkout session
+            session = stripe.checkout.Session.create(
+                mode="payment",
+                payment_method_types=["card"],
+                line_items=[{
+                    "price_data": {
+                        "currency": "gbp",
+                        "product_data": {"name": f"Deposit for booking {br.event_date}"},
+                        "unit_amount": br.deposit_pence,
+                    },
+                    "quantity": 1,
+                }],
+                success_url=request.build_absolute_uri(
+                    reverse("booking_success", args=[br.id])
+                ),
+                cancel_url=request.build_absolute_uri(
+                    reverse("booking_cancel", args=[br.id])
+                ),
+            )
+            br.stripe_session_id = session.id
+            br.save(update_fields=["stripe_session_id"])
+            return redirect(session.url, code=303)
     else:
         form = BookingRequestForm()
-    return render(request, "orders/booking_form.html", {"form": form, "mode": "create"}) 
+    return render(request, "orders/booking_form.html", {"form": form, "mode": "create"})
+
+@login_required
+def booking_success(request, pk):
+    booking = get_object_or_404(BookingRequest, pk=pk, user=request.user)
+    booking.status = "new"
+    booking.deposit_paid = True
+    booking.save(update_fields=["status", "deposit_paid"])
+    messages.success(request, "Deposit paid successfully! Your booking is confirmed.")
+    return redirect("my_bookings")
+
+@login_required
+def booking_cancel(request, pk):
+    booking = get_object_or_404(BookingRequest, pk=pk, user=request.user)
+    booking.status = "cancelled"
+    booking.save(update_fields=["status"])
+    messages.info(request, "Your booking has been cancelled. Any deposit authorisation has been released, and refunds usually appear in 3–5 business days.")
+    return redirect("my_bookings")
 
 @login_required
 def my_bookings(request):
