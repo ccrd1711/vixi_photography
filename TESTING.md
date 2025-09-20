@@ -24,7 +24,7 @@ The README.md for this website can be found [here](/README.md).
 
 ### HTML 
 
-HTML validation was completed using [W3C Validator](https://validator.w3.org). In past projects I have copied and pasted my HTML directly from the files in VS Code in to the validator to test. This time, due to having base.html and most html pages in my project extending from base.html, I went to every single page on the deployed website and viewed the source code. I copied and pasted this html in to the validator. Every single page passed with no errors. When putting base.html into the HTML validator itself by direct input it fails however this is due to the {% ...} tag at the start, a Django-specific command invisible to the browser. 
+HTML validation was completed using [W3C Validator](https://validator.w3.org). 
 
 ### CSS 
 
@@ -113,22 +113,24 @@ This section contains a range of issues that were solved, including simple ones 
 
  Fixed bugs | What happened? | Solution 
 -- | -- | -- |
-No. 1 | XX | XX
-No. 2 | XX | XX 
-No. 3 | XX | XX
-No. 4 | XX | XX
-No. 5 | XX | XX 
-No. 6 | XX | XX 
-No. 7 | XX | XX
-No. 8 | XX | XX 
-No. 9 | XX | XX 
-No.10 | XX | XX 
-No.11 | XX | XX
-No.12 | XX | XX
-No.13 | XX | XX 
-No.14 | XX | XX
-No.15 | XX | XX 
-No.16 | XX | XX
-No.18 | XX | XX
-No.19 | XX | XX 
-No.20 | XX | XX
+No. 1 | Edit booking view crashed (returned None) | Moved return render(...) outside the if block so GET requests always return a response.
+No. 2 | Edit/Cancel buttons not showing as valid links | Fixed missing quote in the <a> tag around {% url 'edit_booking' b.pk %} 
+No. 3 | Profile page error: ProfileForm got unexpected keyword arguments: 'instance' | Removed accidental Profile model from forms.py and replaced it with a proper ProfileForm(forms.ModelForm).
+No. 4 | Success page error after checkout | Order.objects.obects typo and wrong field name created; corrected to objects and used created_at
+No. 5 | My Orders page crashing with invalid literal for int() with base 10: '9000.00' | Template was using divisibleby filter incorrectly on money; replaced with proper total_display method. 
+No. 6 | Admin broke after adding download field | Added missing migration for download_path (and later download_path_bw) and updated admin.py to match current model fields.
+No. 7 | Download button error (OrderItem not defined) | Added correct import for OrderItem in orders/views.py.
+No. 8 | Download path 404 (wrong URL) | Fixed to resolve static file paths properly with static() instead of hardcoded paths. 
+No. 9 | Profile edit missing fields | Updated ProfileForm and Profile model to include phone and address fields; added validation.
+No.10 | Gradient background not showing | Removed background override in .page {} and locked footer to bottom so gradient covers full viewport.
+No.11 | On another page, the gradient repeated behind footer | Fixed CSS with min-height: 100vh; display:flex; flex-direction:column; so footer stays at bottom and gradient doesn’t repeat.
+No.12 | Register didn’t log user in | Updated register view to authenticate+login after creating account for better UX.
+No.13 | Profile email caused errors | Removed redundant email field from Profile model and used user.email instead. 
+No.14 | Adding Colour/B&W option broke gallery | Initially tied gallery display to download paths; refactored to separate image_url (for gallery display) vs download_path/download_path_bw (for purchased downloads).
+No.15 | Gallery photos not showing | Admin had .jpeg while static folder used .jpg; fixed by adding correct image_url field and aligning admin entries with actual filenames.
+No.16 | Download button crashed (static not defined) | Added from django.templatetags.static import static import in orders/views.py.
+No.18 | Double bookings allowed | Added form validation + DB constraint to block duplicate bookings on same date with active status.
+No.19 | Booking form date picker missing | Explicitly used DateInput(type="date") widget to restore native date picker.
+No.20 | Booking form accepted past dates and numeric-only locations | Added custom clean_event_date and clean_location validators to block past dates and enforce text-based location names.
+No.21 | Basket didn't differentiate between colour and black and white items | Updated cart and templates to show CLR or B&W tages
+No.22 | Basket 'remove' cleared all items in the basket not just one | Added remove_one view and template link to decrement single item instead of removing all
