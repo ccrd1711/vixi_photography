@@ -12,9 +12,6 @@ from django.templatetags.static import static
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-PRODUCT_NAME = "Mini-shoot booking"
-UNIT_AMOUNT = 5000  # £50.00
-
 # CART
 def cart_view(request):
     items = []
@@ -100,22 +97,29 @@ def remove_one(request, photo_id, variant):
 # STRIPE
 @login_required(login_url="/accounts/login/")
 def checkout(request):
+    # Build an Order from the session cart
     order = create_order_from_session(request.user, request.session)
-    if not order:
+    if not order or order.items.count() == 0:
         messages.error(request, "Your basket is empty.")
         return redirect("cart")
+
+    # Build Stripe line items from OrderItems
+    line_items = []
+    for it in order.items.select_related("photo"):
+        name = f"{it.photo.title} ({'B&W' if it.variant == 'bw' else 'Colour'})"
+        line_items.append({
+            "price_data": {
+                "currency": "gbp",
+                "product_data": {"name": name},
+                "unit_amount": it.price_each_pence,  # already in pence
+            },
+            "quantity": it.qty,
+        })
 
     session = stripe.checkout.Session.create(
         mode='payment',
         payment_method_types=['card'],
-        line_items=[{
-            "price_data": {
-                "currency": "gbp",
-                "product_data": {"name": PRODUCT_NAME},
-                "unit_amount": UNIT_AMOUNT,
-            },
-            "quantity": 1,
-        }],
+        line_items=line_items,
         success_url=request.build_absolute_uri(reverse('checkout_success')),
         cancel_url=request.build_absolute_uri(reverse('checkout_cancel')),
     )
