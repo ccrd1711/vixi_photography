@@ -367,3 +367,32 @@ body.dark .grid img {
 html, body {
   height: 100%;
 }
+
+/* Media queries */
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .card-img {
+    height: 180px;
+  }
+  .hero {
+    padding: 40px 10px;
+  }
+  .hero .roulette-box {
+    width: 100%;
+    height: auto;
+  }
+  .hero img {
+    width: 100%;
+    height: auto;
+  }
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-links {
+    margin-top: 10px;
+  }
+}
