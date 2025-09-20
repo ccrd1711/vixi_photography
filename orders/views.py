@@ -235,7 +235,7 @@ def delete_booking(request, pk):
         else:
             messages.info(request, "Booking cancelled.")
         return redirect("my_bookings")
-    return render(request, "orders/confirm_delete_booking.html", {"booking": br})
+    return render(request, "orders/booking_confirm_delete.html", {"booking": br})
 
 @login_required
 def my_orders(request):
