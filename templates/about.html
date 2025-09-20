@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}About • Vixi Photography{% endblock %}
+
+{% block content %}
+<section class="container">
+  <h1>About Vixi</h1>
+  <p>Vixi Photography specialises in clean, modern sports photography — from trackside action to candid paddock moments.</p>
+  <p>Book a dedicated mini-shoot or discuss bespoke coverage for your event.</p>
+
+  <div class="actions" style="margin-top:16px;">
+    <a class="btn" href="{% url 'book_request' %}">Book the Photographer</a>
+    <a class="btn btn-secondary" href="{% url 'gallery_index' %}">Browse the Gallery</a>
+  </div>
+</section>
+{% endblock %}

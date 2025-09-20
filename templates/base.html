@@ -21,6 +21,7 @@
   <header class="nav">
     <a class="brand btn" href="{% url 'home' %}">VIXI</a>
     <nav class="nav-links">
+      <a href="{% url 'about' %}" class="btn">ABOUT</a>
       <a href="{% url 'gallery_index' %}" class="btn">GALLERY</a>
       <a href="{% url 'cart' %}" class="btn">BASKET ({{ cart_count|default:0 }})</a>
       {% if user.is_authenticated %}
