@@ -11,7 +11,7 @@
 </p>
 <form method="post">
   {% csrf_token %}
-  <button class="btn btn-danger" type="submit">Yes, cancel</button>
-  <a class="btn" href="{% url 'my_bookings' %}">Keep booking</a>
+  <button class="btn btn-book" type="submit">Yes, cancel</button>
+  <a class="btn-book" href="{% url 'my_bookings' %}">Keep booking</a>
 </form>
 {% endblock %}

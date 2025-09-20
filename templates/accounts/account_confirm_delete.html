@@ -7,7 +7,7 @@
 
 <form method="post">
   {% csrf_token %}
-  <button class="btn btn-danger" type="submit">Yes, delete my account</button>
-  <a class="btn" href="{% url 'profile' %}">Cancel</a>
+  <button class="btn-book" type="submit">Yes, delete my account</button>
+  <a class="btn-book" href="{% url 'profile' %}">Cancel</a>
 </form>
 {% endblock %}
