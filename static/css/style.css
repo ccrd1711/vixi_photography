@@ -205,7 +205,6 @@ body.dark .grid img {
   border:1px solid #eee; 
   border-radius:12px; 
   overflow:hidden; 
-  background:#fff; 
 }
 
 .card-img { 
@@ -254,6 +253,11 @@ body.dark .grid img {
   border: none;
   text-decoration: none;
   cursor: pointer;
+}
+
+.basket-btn {
+  background: #f88604;
+  color: white;
 }
 
 .home-btn {
