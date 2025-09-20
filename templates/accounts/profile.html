@@ -7,4 +7,5 @@
 <p><strong>Phone:</strong> {{ profile.phone|default:"—" }}</p>
 <p><strong>Address:</strong><br>{{ profile.address|linebreaksbr|default:"—" }}</p>
 <a class="btn" href="{% url 'profile_edit' %}">Edit Profile</a>
+<a class="btn btn-danger" href="{% url 'account_delete' %}">Delete Account</a>
 {% endblock %}

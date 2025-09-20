@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout 
+from django.views.decorators.http import require_http_methods
 from .models import Profile
 from .forms import SignUpForm, ProfileForm
 
@@ -40,3 +42,13 @@ def profile_edit(request):
         form = ProfileForm(instance=profile, user=request.user)
     return render(request, "accounts/profile_edit.html", {"form": form})
 
+@login_required
+@require_http_methods(["GET", "POST"])
+def account_delete(request):
+    if request.method == "POST":
+        user = request.user
+        logout(request)          
+        user.delete()            #Orders are SET_NULL
+        messages.success(request, "Your account has been permanently deleted.")
+        return redirect("home")
+    return render(request, "accounts/account_confirm_delete.html")

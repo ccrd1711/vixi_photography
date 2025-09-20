@@ -282,6 +282,16 @@ body.dark .grid img {
   color:#f88604;
 }
 
+.btn-danger {
+  border-colour: #b91c1c;
+  background: #b91c1c; 
+  color: fff; 
+}
+
+.btn-danger:hover { 
+  opacity: .9; 
+}
+
 /* cart table */
 .cart-table { 
   width:100%; 

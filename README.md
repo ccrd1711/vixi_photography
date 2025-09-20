@@ -26,8 +26,7 @@ The live Vixi Photography site can be viewed [here](https://vixi-photography-98e
 * [Testing File](#testing-file)
 * [Deployment](#deployment-and-accessing-code-workspace)
 * [Credits](#credits)
-    * [Content](#content)
-    * [Media](#media) 
+    * [Content & Media](#content&media)
 * [Acknowledgements](#acknowledgements)
 
 # Introduction 
@@ -120,7 +119,7 @@ The combination of a dark, neutral background with bright orange accents creates
 
 ## Images 
 
-All the images in this project are real by Tom
+All the images in this project are real photographs which have been provided by my good friend Tom who is endeavouring on a new career as a professional photographer in Kidderminster. He travelled to Belgium for the F1 earlier this year around the time where I was planning this project. He is also mentioned below in Acknowledgments. 
 
 ## Database Tables 
 
@@ -303,16 +302,11 @@ You can also enable Automatic Deploys so that every push to GitHub triggers a re
 
 # Credits 
 
-## Content 
-This website is an orginal creation and all the content is based off my own ideas and imagination. The name of the planet Phaedrus-1711, is based off a character in one of my favourite books of all time *Zen and the Art of Motorcycle Maintenance*. Phaedrus' contextual existence in the novel amongst readers is somewhat contested, but Phaedrus could be summarised simply as the alter ego of the narrator. 17 & 11 are just favoured numbers in our household. We also have a cat named Phaedrus!
-
-You will find other literary links, too. There is a planet Kerouac-47. Jack is one of my favourite writers and he passed at the young age of 47. Vonnegut 5 is named after the author Kurt Vonnegut, and 5 is an homeage to *Slaughterhouse Five*. Joyce-730 is an ode to James Joyce, 730 being the number of pages there was in the first edition of the novel *Ulysses*.
-
-All content in the website itself is fictional. 
-
-## Media 
-As stated near the top of this ReadMe file, all the media in this project was generated with ChatGPT with prompts given by me, the autor of the site. Late in the project I also realised I didn't have a home button in the top left which I like to have as an option, ChatGPT also designed that for me. 
+## Content & Media 
+ 
+All the content in this project, in terms of the photography, are owned and shared by my friend Tom. He currently does not have a working website so shares his work exclusively on his Instagram @shotsbytombow.
+The website in its entirety was created by me. 
 
 ## Acknowledgements 
 
-I would like to thank (again!) the close knit support of friends and family I have. When it comes to these projects, they all offer their continuous encouragement and offer to test things out for me. 
+I would like to thank my family and friends for encouraging me to continue working on this project during the start of the summer and continuing through to this final weekend through what has been an intensely challenging and saddening time for us all, which has coincided with a lot of change. Also I would like to thank all the members of Code Institute who have offered any sort of guidance along the way in this past year. 
