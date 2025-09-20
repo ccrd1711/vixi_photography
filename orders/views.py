@@ -221,13 +221,21 @@ def edit_booking(request, pk):
     
 @login_required
 def delete_booking(request, pk):
-    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    br = get_object_or_404(
+        BookingRequest, 
+        pk=pk, 
+        user=request.user, 
+        status__in=["new", "review", "accepted"]
+    )
     if request.method == "POST":
         br.status = "cancelled"
         br.save(update_fields=["status"])
-        messages.info(request, "Booking request cancelled.")
+        if br.deposit_paid:
+            messages.info(request, "Booking cancelled. Any deposit authorisation has been released, and refunds usually appear in 3–5 business days.")
+        else:
+            messages.info(request, "Booking cancelled.")
         return redirect("my_bookings")
-    return render(request, "orders/booking_confirm_delete.html", {"booking": br})
+    return render(request, "orders/confirm_delete_booking.html", {"booking": br})
 
 @login_required
 def my_orders(request):

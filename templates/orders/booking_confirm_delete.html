@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
-{% block title %}Confirm Booking Cancellation • Vixi Photography{% endblock %}
+{% block title %}Cancel booking • Vixi{% endblock %}
 {% block content %}
-<h1>Cancel Booking</h1>
-<p>Are you sure you want to cancel your booking for <strong>{{ booking.event_date }}</strong> at <strong>{{ booking.location }}</strong>?</p>
+<h1>Cancel booking</h1>
+<p>
+  {% if booking.deposit_paid %}
+    This booking has a paid deposit. If you cancel, your deposit will be refunded; refunds usually appear in 3–5 business days.
+  {% else %}
+    Are you sure you want to cancel this booking request?
+  {% endif %}
+</p>
 <form method="post">
-    {% csrf_token %}
-    <button class="btn" type="submit">Yes, Cancel Booking</button>
-    <a class="btn btn-secondary" href="{% url 'my_bookings' %}">No, Go Back</a>
+  {% csrf_token %}
+  <button class="btn btn-danger" type="submit">Yes, cancel</button>
+  <a class="btn" href="{% url 'my_bookings' %}">Keep booking</a>
 </form>
 {% endblock %}
