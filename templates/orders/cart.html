@@ -17,7 +17,7 @@
           <td class="t-center">{{ it.qty }}</td>
           <td class="t-right">{{ it.line_total_display }}</td>
           <td class="t-right">
-            <a class="btn btn-secondary"
+            <a class="btn-book"
               href="{% url 'remove_one' it.photo.id it.variant %}">Remove</a>
           </td>
         </tr>
@@ -30,8 +30,8 @@
   </table>
 
   <div class="actions">
-    <a class="btn" href="{% url 'gallery_index' %}">CONTINUE SHOPPING</a>
-    <a class="btn" href="{% url 'checkout' %}">CHECKOUT</a>
+    <a class="btn-book" href="{% url 'gallery_index' %}">CONTINUE SHOPPING</a>
+    <a class="btn-book" href="{% url 'checkout' %}">CHECKOUT</a>
   </div>
 {% else %}
   <p>Your basket is empty.</p>
