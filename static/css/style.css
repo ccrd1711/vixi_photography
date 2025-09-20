@@ -373,6 +373,7 @@ html, body {
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
+    padding: 0 16px;
   }
   .card-img {
     height: 180px;
