@@ -63,13 +63,15 @@ class BookingRequest(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default='new')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # NEW FIELDS
-    deposit_pence = models.PositiveIntegerField(default=5000)  # £50
+    deposit_pence = models.PositiveIntegerField(default=5000) 
     deposit_paid = models.BooleanField(default=False)
     stripe_session_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-created_at']
+
+    def deposit_display(self):
+        return f"£{self.deposit_pence/100:.2f}"
 
     def __str__(self):
         return f"{self.user} - {self.event_date} - {self.location}"

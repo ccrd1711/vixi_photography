@@ -21,7 +21,7 @@
             <td>{{ b.get_status_display }}</td>
             <td>
               {% if b.deposit_paid %}
-                £{{ b.deposit_pence|floatformat:2|divisibleby:100 }} Paid
+                {{ b.deposit_display }} Paid
               {% else %}
                 Unpaid
               {% endif %}
