@@ -2,14 +2,29 @@
 {% block title %}About • Vixi Photography{% endblock %}
 
 {% block content %}
-<section class="container">
+<section class="intro-container">
   <h1>About Vixi</h1>
-  <p>Vixi Photography specialises in clean, modern sports photography — from trackside action to candid paddock moments.</p>
-  <p>Book a dedicated mini-shoot or discuss bespoke coverage for your event.</p>
+  <p>Hi, I'm Tom, the photographer behind VIXI. I've studied photography for years and built up experience shooting 
+    university sports, graduations, general events, and even portraits. I love capturing everything from fast-paced
+    matches to the small details that make each event unique.</p>
+  <p>It was the roar and spectacle of the Belgian Grand Prix that truly ignited my passion for sports photography
+    and has convinced me to pursue it as a full-time career. Since then, I've focused on bringing that same energy and 
+    attention to detail to every shoot I undertake.</p>
+  <p>Despite my love for sports, I also still enjoy shooting portraits and events. I believe that every moment has 
+    a story to tell, whether it's the thrill of competition or the joy of a special occasion. My goal is to capture those stories in a way 
+    that resonates with people and preserves memories for years to come.</p>
+  <p>So! If you're looking for sharp, authentic sports imagery for your upcoming event, or want to get in touch about 
+    your next portrait session, please don't hesitate to reach out. I'd love to hear from you and discuss how we can 
+    work together to create something amazing.
+  </p>
+  <p>Below, you will find a link to a form where you can book me for your next event or portrait session. It does come
+    with a small deposit to secure your date, but I promise it's worth it!
+    Additionally, feel free to browse through my gallery to see some of my recent work and get a sense of my style.
+  </p>
 
-  <div class="actions" style="margin-top:16px;">
-    <a class="btn" href="{% url 'book_request' %}">Book the Photographer</a>
-    <a class="btn btn-secondary" href="{% url 'gallery_index' %}">Browse the Gallery</a>
+  <div class="actions">
+    <a class="btn-about" href="{% url 'book_request' %}">Book the Photographer</a>
+    <a class="btn-about" href="{% url 'gallery_index' %}">Browse the Gallery</a>
   </div>
 </section>
 {% endblock %}
