@@ -46,11 +46,11 @@ Here are the reports I got from running Lighthouse reports on desktop and mobile
 
 ### Desktop
 
-![A screenshot of the results of lighthouse testing on desktop](/docs/images/lighthouse/desktop%20index%20lighthouse.png)
+![A screenshot of the results of lighthouse testing on desktop](/docs/images/lighthouse/lighthouse-results-pc.png)
 
 ### Mobile 
 
-![A screenshot of the results of Lighthouse testing on mobile devices](/docs/images/lighthouse/mobile-lighthouse-report.png)
+![A screenshot of the results of Lighthouse testing on mobile devices](/docs/images/lighthouse/lighthouse-results-mobile.png)
 
 # Manual Testing 
 

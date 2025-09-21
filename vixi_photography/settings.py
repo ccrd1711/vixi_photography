@@ -36,6 +36,8 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
+X_FRAME_OPTIONS = 'ALLOWALL'  # allows framing (Django treats this as “no header”)
+
 
 # Application definition
 
