@@ -45,28 +45,13 @@ def cart_view(request):
 
 
 def add_to_cart(request, photo_id):
-    if request.method != "POST":
-        return redirect("gallery_index")
-
     variant = request.POST.get("variant", "colour")
-    key = f"{photo_id}:{variant}"
+    sc.add(request.session, photo_id, qty=1, variant=variant)
 
-    cart = request.session.get("cart", {})
-    current = cart.get(key)
-    if isinstance(current, dict):
-        qty = int(current.get("qty", 0)) + 1
-    elif current is not None:
-        qty = int(current) + 1
-    else:
-        qty = 1
-    cart[key] = {"qty": qty, "variant": variant}
+    photo = get_object_or_404(Photo, pk=int(photo_id))
+    label = "B&W" if variant == "bw" else "CLR"
+    messages.success(request, f"Added {photo.title or 'photo'} ({label}) to basket.")
 
-    request.session["cart"] = cart
-    request.session.modified = True
-
-    photo = get_object_or_404(Photo, pk=photo_id)
-    messages.success(request, f"Added {photo.title or 'photo'}
-                     ({'B/W' if variant == 'bw' else 'Colour'}) to basket.")
     return redirect(request.POST.get("next") or "cart")
 
 
