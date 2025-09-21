@@ -1,37 +1,23 @@
-{% extends "base.html" %}
-{% block title %}My Orders{% endblock %}
-{% block content %}
+Page not found (404)
+No OrderItem matches the given query.
+Request Method:	GET
+Request URL:	https://vixi-photography-98e8a4e90f4d.herokuapp.com/orders/download/39/
+Raised by:	orders.views.download_item
+Using the URLconf defined in vixi_photography.urls, Django tried these URL patterns, in this order:
 
-<h1>My Orders</h1>
+admin/
+[name='home']
+gallery/
+accounts/
+orders/ cart/ [name='cart']
+orders/ cart/add/<int:photo_id>/ [name='add_to_cart']
+orders/ cart/remove/<int:photo_id>/ [name='remove_from_cart']
+orders/ cart/remove-one/<int:photo_id>/ [name='remove_one']
+orders/ checkout/ [name='checkout']
+orders/ success/ [name='checkout_success']
+orders/ cancel/ [name='checkout_cancel']
+orders/ orders/ [name='my_orders']
+orders/ download/<int:item_id>/ [name='download_item']
+The current path, orders/download/39/, matched the last one.
 
-{% for o in orders %}
-  <div class="order-card">
-    <h2>Order #{{ o.id }} - {{ o.created_at|date:"Y-m-d H:i" }}</h2>
-    <p>Status: {{ o.status }}</p>
-
-    <table class="cart-table">
-      <thead>
-        <tr><th>Photo</th><th>Variant</th><th>Qty</th><th>Line Total</th><th>Actions</th></tr>
-      </thead>
-      <tbody>
-        {% for item in o.items.all %}
-          <tr>
-            <td>{{ item.photo }}</td>
-            <td>{{ item.get_variant_display }}</td>
-            <td>{{ item.qty }}</td>
-            <td>{{ item.subtotal_display }}</td>
-            <td>
-              <a href="{% url 'download_item' item.id %}" target="_blank" rel="noopener">Download</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <p><strong>Order Total: {{ o.total_display }}</strong></p>
-  </div>
-{% empty %}
-  <p>You have no orders yet.</p>
-{% endfor %}
-
-{% endblock %}
+You’re seeing this error because you have DEBUG = True in your Django settings file. Change that to False, and Django will display a standard 404 page.

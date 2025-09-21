@@ -216,15 +216,16 @@ def download_item(request, item_id: int):
     item = get_object_or_404(
         OrderItem.objects.select_related("order", "photo"),
         pk=item_id,
-        order__user=request.user,
-        order__status="paid",
     )
-    if item.variant == "bw" and item.photo.download_path_bw:
-        url = settings.STATIC_URL + item.photo.download_path_bw
-    else:
-        url = settings.STATIC_URL + item.photo.download_path
+    if item.order.user_id != request.user.id:
+        return HttpResponseForbidden("Not your order.")
+    if item.order.status != "paid":
+        messages.error(request, "Downloads are available after payment.")
+        return redirect("my_orders")
 
+    url = item.photo.download_url_bw if item.variant == "bw" else item.photo.download_url
     if not url:
         messages.error(request, "Download unavailable for this item.")
         return redirect("my_orders")
+
     return redirect(url)
