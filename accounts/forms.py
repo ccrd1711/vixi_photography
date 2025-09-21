@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Profile
 
+
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
@@ -27,6 +28,7 @@ class SignUpForm(UserCreationForm):
             user.save()
         return user
 
+
 class ProfileForm(forms.ModelForm):
     # accept `user` kwarg from the view, even if we don't use it now
     def __init__(self, *args, **kwargs):
@@ -38,6 +40,7 @@ class ProfileForm(forms.ModelForm):
         fields = ("display_name", "address", "phone")
         widgets = {
             "display_name": forms.TextInput(attrs={"placeholder": "Name"}),
-            "address": forms.Textarea(attrs={"rows": 3, "placeholder": "Address"}),
+            "address": forms.Textarea(attrs={"rows": 3, "placeholder":
+                                             "Address"}),
             "phone": forms.TextInput(attrs={"placeholder": "Phone"}),
         }
