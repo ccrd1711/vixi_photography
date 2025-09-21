@@ -6,7 +6,14 @@
 
 {% if items %}
   <table class="cart-table">
-    <thead><tr><th>Photo</th><th>Qty</th><th>Line total</th><th></th></tr></thead>
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Qty</th>
+        <th>Line total</th>
+        <th></th>
+      </tr>
+    </thead>
     <tbody>
       {% for it in items %}
         <tr>
@@ -18,14 +25,21 @@
           <td class="t-right">{{ it.line_total_display }}</td>
           <td class="t-right">
             <a class="btn-book"
-              href="{% url 'remove_one' it.photo.id it.variant %}">Remove</a>
+               href="{% url 'remove_one' it.photo.id %}?v={{ it.variant }}">−1</a>
+            <a class="btn-book"
+               href="{% url 'remove_from_cart' it.photo.id %}?v={{ it.variant }}">Remove all</a>
           </td>
         </tr>
       {% endfor %}
     </tbody>
 
     <tfoot>
-      <tr><td></td><td class="t-right"><strong>Total</strong></td><td class="t-right"><strong>{{ total_display }}</strong></td><td></td></tr>
+      <tr>
+        <td></td>
+        <td class="t-right"><strong>Total</strong></td>
+        <td class="t-right"><strong>{{ total_display }}</strong></td>
+        <td></td>
+      </tr>
     </tfoot>
   </table>
 
