@@ -6,7 +6,6 @@ from django.db.models import Q
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('draft', 'Draft'),
         ('submitted', 'Submitted'),
         ('paid', 'Paid'),
         ('cancelled', 'Cancelled'),

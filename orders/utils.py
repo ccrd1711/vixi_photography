@@ -9,7 +9,8 @@ def create_order_from_session(user, session):
 
     order = Order.objects.create(
         user=user if getattr(user, "is_authenticated", False) else None,
-        email=(getattr(user, "email", "") or "")
+        email=(getattr(user, "email", "") or ""),
+        status="submitted",   # ✅ make sure new orders start as submitted
     )
 
     for key, qty in cart.items():
