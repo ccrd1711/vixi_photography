@@ -1,12 +1,15 @@
 from .models import Order, OrderItem
 from gallery.models import Photo
 
+
 def create_order_from_session(user, session):
     cart = session.get("cart", {})
     if not cart:
         return None
 
-    order = Order.objects.create(user=user, status="submitted", email=(user.email if user and user.is_authenticated else ""))
+    order = Order.objects.create(user=user, status="submitted",
+                                 email=(user.email if user and
+                                        user.is_authenticated else ""))
 
     total = 0
     for key, val in cart.items():

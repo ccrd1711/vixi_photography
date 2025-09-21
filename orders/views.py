@@ -12,7 +12,7 @@ from django.templatetags.static import static
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# CART
+
 def cart_view(request):
     items = []
     total = 0
@@ -43,6 +43,7 @@ def cart_view(request):
     }
     return render(request, "orders/cart.html", ctx)
 
+
 def add_to_cart(request, photo_id):
     if request.method != "POST":
         return redirect("gallery_index")
@@ -64,12 +65,15 @@ def add_to_cart(request, photo_id):
     request.session.modified = True
 
     photo = get_object_or_404(Photo, pk=photo_id)
-    messages.success(request, f"Added {photo.title or 'photo'} ({'B/W' if variant=='bw' else 'Colour'}) to basket.")
+    messages.success(request, f"Added {photo.title or 'photo'}
+                     ({'B/W' if variant == 'bw' else 'Colour'}) to basket.")
     return redirect(request.POST.get("next") or "cart")
+
 
 def remove_from_cart(request, photo_id):
     cart = request.session.get("cart", {})
-    keys = [k for k in list(cart.keys()) if k.split(":", 1)[0] == str(photo_id)]
+    keys = [k for k in list(cart.keys())
+            if k.split(":", 1)[0] == str(photo_id)]
     for k in keys:
         del cart[k]
     request.session["cart"] = cart
@@ -77,13 +81,15 @@ def remove_from_cart(request, photo_id):
     messages.info(request, "Removed from basket.")
     return redirect("cart")
 
+
 def remove_one(request, photo_id, variant):
     cart = request.session.get("cart", {})
     key = f"{photo_id}:{variant}"
     val = cart.get(key)
 
     if val is not None:
-        qty = int(val.get("qty", val)) - 1 if isinstance(val, dict) else int(val) - 1
+        qty = int(val.get("qty", val)) - 1 if isinstance(val, dict)
+        else int(val) - 1
         if qty > 0:
             cart[key] = {"qty": qty, "variant": variant}
         else:
@@ -94,7 +100,7 @@ def remove_one(request, photo_id, variant):
 
     return redirect("cart")
 
-# STRIPE
+
 @login_required(login_url="/accounts/login/")
 def checkout(request):
     # Build an Order from the session cart
@@ -106,7 +112,8 @@ def checkout(request):
     # Build Stripe line items from OrderItems
     line_items = []
     for it in order.items.select_related("photo"):
-        name = f"{it.photo.title} ({'B&W' if it.variant == 'bw' else 'Colour'})"
+        name = f"{it.photo.title}
+        ({'B&W' if it.variant == 'bw' else 'Colour'})"
         line_items.append({
             "price_data": {
                 "currency": "gbp",
@@ -125,10 +132,12 @@ def checkout(request):
     )
     return redirect(session.url, code=303)
 
+
 @login_required(login_url='/accounts/login/')
 def checkout_success(request):
     if request.user.is_authenticated:
-        latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created_at').first()
+        latest = Order.objects.filter(user=request.user, status='submitted')
+        .order_by('-created_at').first()
         if latest:
             latest.status = 'paid'
             latest.save(update_fields=['status'])
@@ -137,9 +146,11 @@ def checkout_success(request):
     messages.success(request, "Payment successful! Thank you for your order.")
     return render(request, "orders/success.html")
 
+
 @login_required(login_url='/accounts/login/')
 def checkout_cancel(request):
-    messages.info(request, "Payment cancelled. You can try again from your basket.")
+    messages.info(request,
+                  "Payment cancelled. You can try again from your basket.")
     return render(request, "orders/cancel.html")
 
 
@@ -160,7 +171,8 @@ def book_request(request):
                 line_items=[{
                     "price_data": {
                         "currency": "gbp",
-                        "product_data": {"name": f"Deposit for booking {br.event_date}"},
+                        "product_data": {
+                            "name": f"Deposit for booking {br.event_date}"},
                         "unit_amount": br.deposit_pence,
                     },
                     "quantity": 1,
@@ -177,7 +189,9 @@ def book_request(request):
             return redirect(session.url, code=303)
     else:
         form = BookingRequestForm()
-    return render(request, "orders/booking_form.html", {"form": form, "mode": "create"})
+    return render(request, "orders/booking_form.html",
+                  {"form": form, "mode": "create"})
+
 
 @login_required
 def booking_success(request, pk):
@@ -185,28 +199,35 @@ def booking_success(request, pk):
     booking.status = "new"
     booking.deposit_paid = True
     booking.save(update_fields=["status", "deposit_paid"])
-    messages.success(request, "Deposit paid successfully! Your booking is confirmed.")
+    messages.success(request,
+                     "Deposit paid successfully! Your booking is confirmed.")
     return redirect("my_bookings")
+
 
 @login_required
 def booking_cancel(request, pk):
     booking = get_object_or_404(BookingRequest, pk=pk, user=request.user)
     booking.status = "cancelled"
     booking.save(update_fields=["status"])
-    messages.info(request, "Your booking has been cancelled. Any deposit authorisation has been released, and refunds usually appear in 3–5 business days.")
+    messages.info(request, "Your booking has been cancelled.
+                  Any deposit authorisation
+                  has been released, and refunds usually appear in 3–5
+                  business days.")
     return redirect("my_bookings")
+
 
 @login_required
 def my_bookings(request):
     bookings = BookingRequest.objects.filter(user=request.user)
     return render(request, "orders/my_bookings.html", {"bookings": bookings})
 
+
 @login_required
 def edit_booking(request, pk):
     br = get_object_or_404(
-        BookingRequest, 
-        pk=pk, 
-        user=request.user, 
+        BookingRequest,
+        pk=pk,
+        user=request.user,
         status__in=["new", "review"]
     )
     if request.method == "POST":
@@ -217,25 +238,32 @@ def edit_booking(request, pk):
             return redirect("my_bookings")
     else:
         form = BookingRequestForm(instance=br)
-    return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
-    
+    return render(request, "orders/booking_form.html",
+                  {"form": form, "mode": "edit"})
+
+
 @login_required
 def delete_booking(request, pk):
     br = get_object_or_404(
-        BookingRequest, 
-        pk=pk, 
-        user=request.user, 
+        BookingRequest,
+        pk=pk,
+        user=request.user,
         status__in=["new", "review", "accepted"]
     )
     if request.method == "POST":
         br.status = "cancelled"
         br.save(update_fields=["status"])
         if br.deposit_paid:
-            messages.info(request, "Booking cancelled. Any deposit authorisation has been released, and refunds usually appear in 3–5 business days.")
+            messages.info
+            (request, "Booking cancelled.
+                Any deposit authorisation has been released,
+                and refunds usually appear in 3–5 business days.")
         else:
             messages.info(request, "Booking cancelled.")
         return redirect("my_bookings")
-    return render(request, "orders/booking_confirm_delete.html", {"booking": br})
+    return render(request, "orders/booking_confirm_delete.html",
+                  {"booking": br})
+
 
 @login_required
 def my_orders(request):
@@ -246,6 +274,7 @@ def my_orders(request):
         .prefetch_related("items", "items__photo")
     )
     return render(request, "orders/my_orders.html", {"orders": orders})
+
 
 @login_required
 def download_item(request, item_id: int):
@@ -264,5 +293,6 @@ def download_item(request, item_id: int):
         messages.error(request, "Download unavailable for this item.")
         return redirect("my_orders")
 
-    url = path if path.startswith(("http://", "https://", "/")) else static(path)
+    url = path if path.startswith(("http://",
+                                   "https://", "/")) else static(path)
     return redirect(url)

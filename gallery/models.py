@@ -1,6 +1,7 @@
 from django.db import models
 from django.templatetags.static import static
 
+
 # Create your models here.
 class Gallery(models.Model):
     title = models.CharField(max_length=120)
@@ -14,14 +15,15 @@ class Gallery(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class Photo(models.Model):
     title = models.CharField(max_length=200)
     price_pence = models.PositiveIntegerField(default=0)
 
-    image_url = models.CharField(max_length=255, blank=True)        # "photos/photo1.jpg" or "http://example.com/photo1.jpg"    
-    download_path = models.CharField(max_length=255, blank=True)        # "downloads/photo1_colour.jpg"
-    download_path_bw = models.CharField(max_length=255, blank=True)     # "downloads/photo1_bw.jpg"
+    image_url = models.CharField(max_length=255, blank=True)
+    download_path = models.CharField(max_length=255, blank=True)
+    download_path_bw = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.title
