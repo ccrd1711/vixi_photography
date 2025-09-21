@@ -2,7 +2,6 @@ from django.db import models
 from django.templatetags.static import static
 
 
-# Create your models here.
 class Gallery(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(blank=True)
@@ -30,9 +29,16 @@ class Photo(models.Model):
 
     @property
     def download_url(self):
+        """Return resolved URL for colour download."""
         return self._resolve_static(self.download_path)
 
+    @property
+    def download_url_bw(self):
+        """Return resolved URL for black & white download."""
+        return self._resolve_static(self.download_path_bw)
+
     def download_url_for(self, variant: str):
+        """Return resolved URL depending on variant."""
         if variant == "bw" and self.download_path_bw:
             return self._resolve_static(self.download_path_bw)
         return self._resolve_static(self.download_path or "")
