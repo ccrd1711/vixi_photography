@@ -67,6 +67,7 @@ def remove_from_cart(request, photo_id):
 
 
 # STRIPE
+@login_required(login_url='/accounts/login/')
 def checkout(request):
     # Order from cart
     order = create_order_from_session(request.user, request.session)
@@ -95,7 +96,7 @@ def checkout(request):
     )
     return redirect(session.url, code=303)
 
-
+@login_required(login_url='/accounts/login/')
 def checkout_success(request):
     if request.user.is_authenticated:
         latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created_at').first()
