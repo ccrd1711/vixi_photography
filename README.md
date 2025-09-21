@@ -115,7 +115,21 @@ The combination of a dark, neutral background with bright orange accents creates
 
 ## Wireframes 
 
+Here are the wireframes created for this project. There is no difference between desktop and mobile layout. 
 
+Landing/Home page
+
+The plan was always to be quite minimal in the design of the homepage. I wanted it to be simple yet striking, with one focal point, that being the 'product' of the site. It does not show ALL the images you see in the Gallery as I wanted that to be the main display area. 
+
+![A wireframe for the homepage of the website](/docs/images/features/landing-wireframe-desktop.png)
+
+I wanted to go for the classic look here on the Gallery page. The thought did come through my head of doing another fading carousel type display and changing the landing entirely but I believe this design is better overall for UX.
+
+![A wireframe for the gallery page](/docs/images/features/gallery-wireframe-desktop.png)
+
+On the orders/confirmation list I wanted it to be laid out simply, something like you see in the wireframe below. I wanted it to be clear and highlighted well for navigation and accessibility. 
+
+![A wireframe for the order or booking confirmations part of the profile](/docs/images/features/orders-bookings-desktop.png)
 
 ## Images 
 
@@ -187,11 +201,12 @@ Extends Django’s built-in User model with additional user information.
 
 Here is a Flow Diagram for the User of the site
 
+![User Flow Diagram](/docs/images/tests/user-flow.drawio.png)
 
 
 Here is a Flow Diagram for the Admin/Superuser(s) of the site
 
-
+![Admin Flow Diagram](/docs/images/tests/admin-flow.drawio.png)
 
 # Features 
 
