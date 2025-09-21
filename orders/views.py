@@ -213,16 +213,20 @@ def my_orders(request):
 
 @login_required
 def download_item(request, item_id: int):
-    item = get_object_or_404(
-        OrderItem.objects.select_related("order", "photo"),
-        pk=item_id,
-    )
+    # Try to fetch the order item
+    item = OrderItem.objects.select_related("order", "photo").filter(pk=item_id).first()
+    if not item:
+        messages.error(request, "That download could not be found.")
+        return redirect("my_orders")
+
+    # Ownership + status checks
     if item.order.user_id != request.user.id:
         return HttpResponseForbidden("Not your order.")
     if item.order.status != "paid":
         messages.error(request, "Downloads are available after payment.")
         return redirect("my_orders")
 
+    # Choose download URL by variant
     url = item.photo.download_url_bw if item.variant == "bw" else item.photo.download_url
     if not url:
         messages.error(request, "Download unavailable for this item.")

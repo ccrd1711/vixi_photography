@@ -11,12 +11,8 @@ urlpatterns = [
     path("cancel/", views.checkout_cancel, name="checkout_cancel"),
     path("orders/", views.my_orders, name="my_orders"),
     path("download/<int:item_id>/", views.download_item, name="download_item"),
-    path("download/<int:item_id>/", views.download_item, name="orderitem_download"),
     path("book/", views.book_request, name="book_request"),
     path("bookings/", views.my_bookings, name="my_bookings"),
     path("bookings/<int:pk>/edit/", views.edit_booking, name="edit_booking"),
     path("bookings/<int:pk>/cancel/", views.delete_booking, name="delete_booking"),
-    path("bookings/<int:pk>/pay/", views.booking_deposit_checkout, name="booking_deposit_checkout"),
-    path("bookings/deposit/success/<int:pk>/", views.booking_deposit_success, name="booking_deposit_success"),
-    path("bookings/deposit/cancel/<int:pk>/", views.booking_deposit_cancel, name="booking_deposit_cancel"),
 ]
