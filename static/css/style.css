@@ -138,7 +138,7 @@ h1 {
 
 .nav { 
   background: transparent;
-  color: fff;
+  color: white;
   display:flex; 
   justify-content:space-between; 
   align-items:center; padding:12px 20px; 
@@ -372,10 +372,11 @@ html, body {
 /* Media queries */
 
 @media (max-width: 768px) {
-  .roulette-box 
+  .roulette-box {
   width: 100%;
   max-width: 900px;
 } 
+}
 
 @media (max-width: 1150px) {
   .grid {
@@ -397,7 +398,7 @@ html, body {
   }
   .nav {
     display: flex;
-    alighn-items: center;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: 12px;
