@@ -112,7 +112,6 @@ def checkout_cancel(request):
     return render(request, "orders/cancel.html")
 
 
-# BOOKING PLACEHOLDER
 @login_required(login_url='/accounts/login/')
 def book_request(request):
     if request.method == "POST":
@@ -122,10 +121,48 @@ def book_request(request):
             br.user = request.user
             br.save()
             messages.success(request, "Booking request submitted. A £50 deposit is required.")
-            return redirect("my_bookings")
+            return redirect("booking_deposit_checkout", pk=br.pk)
     else:
         form = BookingRequestForm()
     return render(request, "orders/booking_form.html", {"form": form, "mode": "create"})
+
+@login_required
+def booking_deposit_checkout(request, pk):
+    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        payment_method_types=["card"],
+        line_items=[{
+            "price_data": {
+                "currency": "gbp",
+                "product_data": {"name": f"Booking deposit • {br.event_date} • {br.location}"},
+                "unit_amount": br.deposit_pence,
+            },
+            "quantity": 1,
+        }],
+        success_url=request.build_absolute_uri(reverse("booking_deposit_success", args=[br.pk])),
+        cancel_url=request.build_absolute_uri(reverse("booking_deposit_cancel", args=[br.pk])),
+    )
+    br.stripe_session_id = session.id
+    br.save(update_fields=["stripe_session_id"])
+    return redirect(session.url, code=303)
+
+
+@login_required
+def booking_deposit_success(request, pk):
+    br = get_object_or_404(BookingRequest, pk=pk, user=request.user)
+    if not br.deposit_paid:
+        br.deposit_paid = True
+        br.save(update_fields=["deposit_paid"])
+    messages.success(request, "Deposit paid. Thanks! We’ll be in touch to confirm details.")
+    return redirect("my_bookings")
+
+
+@login_required
+def booking_deposit_cancel(request, pk):
+    br = get_object_or_404(BookingRequest, pk=pk, user=request.user)
+    messages.info(request, "Deposit payment cancelled. You can try again from My Bookings.")
+    return redirect("my_bookings")
 
 
 @login_required
