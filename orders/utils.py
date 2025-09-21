@@ -1,43 +1,51 @@
-from .models import Order, OrderItem
+# orders/utils.py
 from gallery.models import Photo
-
+from .models import Order, OrderItem
 
 def create_order_from_session(user, session):
-    cart = session.get("cart", {})
+    cart = session.get('cart', {})
     if not cart:
         return None
 
-    order = Order.objects.create(user=user, status="submitted",
-                                 email=(user.email if user and
-                                        user.is_authenticated else ""))
+    order = Order.objects.create(
+        user=user if getattr(user, "is_authenticated", False) else None,
+        email=(getattr(user, "email", "") or "")
+    )
 
-    total = 0
-    for key, val in cart.items():
-        # support both old format (int qty) and new (dict with variant)
-        if isinstance(val, dict):
-            qty = int(val.get("qty", 0))
-            variant = val.get("variant", "colour")
-            photo_id = key.split(":", 1)[0]
+    for key, qty in cart.items():
+        # qty might be an int or a dict like {"qty": 2}
+        if isinstance(qty, dict):
+            try:
+                qty_val = int(qty.get("qty", 1))
+            except (TypeError, ValueError):
+                qty_val = 1
         else:
-            qty = int(val)
-            variant = "colour"
-            photo_id = key
+            try:
+                qty_val = int(qty)
+            except (TypeError, ValueError):
+                qty_val = 1
 
-        if qty <= 0:
+        # key can be "photo_id" or "photo_id:variant"
+        variant = "colour"
+        pid_str = str(key)
+        if isinstance(key, str) and ":" in key:
+            pid_str, variant = key.split(":", 1)
+
+        try:
+            pid = int(pid_str)
+        except ValueError:
+            # skip bad cart key
             continue
 
-        photo = Photo.objects.get(pk=int(photo_id))
-        price = photo.price_pence
+        photo = Photo.objects.get(pk=pid)
 
         OrderItem.objects.create(
             order=order,
             photo=photo,
-            qty=qty,
-            price_each_pence=price,
+            qty=max(1, qty_val),
+            price_each_pence=photo.price_pence,
             variant=variant,
         )
-        total += qty * price
 
-    order.total_pence = total
-    order.save(update_fields=["total_pence"])
+    order.recalc()
     return order
