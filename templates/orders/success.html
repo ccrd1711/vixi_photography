@@ -4,5 +4,9 @@
 {% block content %}
 <h1>Payment Successful</h1>
 <p>Thank you for your purchase! Your order has been confirmed.</p>
-<a class="btn-book" href="{% url 'gallery_index' %}">Back to Gallery</a>
+<p>You can access your downloadable copies anytime from <a href="{% url 'my_orders' %}">your Orders</a>.</p>
+<div class="actions">
+  <a class="btn-book" href="{% url 'gallery_index' %}">Back to Gallery</a>
+  <a class="btn-book" href="{% url 'my_orders' %}">Go to Orders</a>
+</div>
 {% endblock %}

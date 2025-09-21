@@ -7,30 +7,44 @@
 {% for o in orders %}
   <div class="order-card">
     <h2>Order #{{ o.id }} - {{ o.created_at|date:"Y-m-d H:i" }}</h2>
-    <p>Status: {{ o.status }}</p>
 
     <table class="cart-table">
       <thead>
-        <tr><th>Photo</th><th>Variant</th><th>Qty</th><th>Line Total</th><th>Actions</th></tr>
+        <tr>
+          <th>Photo</th>
+          <th>Variant</th>
+          <th>Qty</th>
+          <th>Line Total</th>
+          <th>Download</th>
+        </tr>
       </thead>
       <tbody>
-  {% for item in o.items.all %}
-    <tr>
-      <td>{{ item.photo.title }}</td>
-      <td>{{ item.get_variant_display }}</td>
-      <td class="t-center">{{ item.qty }}</td>
-      <td class="t-right">£{{ item.subtotal_pence|floatformat:-2|divisibleby:100 }}</td>
-      <td class="t-right">
-        {% if o.status == "paid" %}
-          <a class="btn" href="{% url 'download_item' item.id %}" target="_blank" rel="noopener">
-            Download ({{ item.get_variant_display }})
-          </a>
-        {% else %} — {% endif %}
-      </td>
-    </tr>
-  {% endfor %}
-</tbody>
-
+        {% for item in o.items.all %}
+          <tr>
+            <td>{{ item.photo.title }}</td>
+            <td>{{ item.get_variant_display }}</td>
+            <td class="t-center">{{ item.qty }}</td>
+            <td class="t-right">{{ item.subtotal_display }}</td>
+            <td class="t-right">
+              {% if o.status == "paid" %}
+                {% if item.variant == "bw" and item.photo.download_url_bw %}
+                  <a class="btn" href="{{ item.photo.download_url_bw }}" download>
+                    Download (B&W)
+                  </a>
+                {% elif item.photo.download_url %}
+                  <a class="btn" href="{{ item.photo.download_url }}" download>
+                    Download (Colour)
+                  </a>
+                {% else %}
+                  —
+                {% endif %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
     <p><strong>Order Total: {{ o.total_display }}</strong></p>
