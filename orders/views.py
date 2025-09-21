@@ -14,19 +14,24 @@ import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# CART
 def cart_view(request):
     items = []
     total = 0
-    for photo_id, val in request.session.get("cart", {}).items():
-        qty = val["qty"] if isinstance(val, dict) else val
-        variant = val.get("variant", "colour") if isinstance(val, dict) else "colour"
-        photo = get_object_or_404(Photo, pk=int(photo_id))
-        line_total = qty * photo.price_pence
+    for key, qty in request.session.get("cart", {}).items():
+        # key format: "<photo_id>:<variant>"
+        try:
+            photo_id_str, variant = key.split(":", 1)
+        except ValueError:
+            # legacy fallback (no variant in key)
+            photo_id_str, variant = key, "colour"
+        photo_id = int(photo_id_str)
+
+        photo = get_object_or_404(Photo, pk=photo_id)
+        line_total = int(qty) * photo.price_pence
         total += line_total
         items.append({
             "photo": photo,
-            "qty": qty,
+            "qty": int(qty),
             "variant": variant,
             "line_total_pence": line_total,
             "line_total_display": f"£{line_total/100:.2f}",
@@ -43,20 +48,21 @@ def add_to_cart(request, photo_id):
     variant = request.POST.get("variant", "colour")
     sc.add(request.session, photo_id, qty=1, variant=variant)
     photo = get_object_or_404(Photo, pk=photo_id)
-    messages.success(request, f"Added {photo.title or 'photo'} ({variant.upper()}) to basket.")
+    label = "B&W" if variant == "bw" else "CLR"
+    messages.success(request, f"Added {photo.title or 'photo'} ({label}) to basket.")
     return redirect(request.POST.get("next") or "cart")
 
 
-def remove_from_cart(request, photo_id):
-    sc.remove(request.session, photo_id)
-    messages.info(request, "Removed item from basket.")
+def remove_one(request, photo_id):
+    variant = request.GET.get("v")  # optional ?v=bw
+    sc.remove_one(request.session, photo_id, variant=variant)
+    messages.info(request, "Removed one item from basket.")
     return redirect("cart")
 
-
-def remove_one(request, photo_id):
-    """Remove a single quantity of a photo from the cart, not all of them."""
-    sc.remove_one(request.session, photo_id)
-    messages.info(request, "Removed one item from basket.")
+def remove_from_cart(request, photo_id):
+    variant = request.GET.get("v")  # optional ?v=bw
+    sc.remove(request.session, photo_id, variant=variant)
+    messages.info(request, "Removed item from basket.")
     return redirect("cart")
 
 

@@ -1,32 +1,54 @@
-from dataclasses import dataclass
+def _cart(session):
+    return session.setdefault("cart", {})
 
-CART_KEY = 'cart'
-
-
-class CartItem:
-    photo: object
-    qty: int
-    line_total_pence: int
-
-
-def _get_cart(session):
-    return session.get(CART_KEY, {})
-
-
-def add(session, photo_id, qty=1):
-    cart = _get_cart(session)
-    cart[str(photo_id)] = cart.get(str(photo_id), 0) + qty
-    session[CART_KEY] = cart
+def _save(session):
     session.modified = True
 
+def _key(photo_id, variant):
 
-def remove(session, photo_id):
-    cart = _get_cart(session)
-    cart.pop(str(photo_id), None)
-    session[CART_KEY] = cart
-    session.modified = True
+    return f"{int(photo_id)}:{variant or 'colour'}"
 
+def add(session, photo_id, qty=1, variant="colour"):
+   
+    cart = _cart(session)
+    key = _key(photo_id, variant)
+    cart[key] = int(cart.get(key, 0)) + int(qty)
+    _save(session)
+
+def remove_one(session, photo_id, variant=None):
+    
+    cart = _cart(session)
+    if variant:
+        key = _key(photo_id, variant)
+        if key in cart:
+            cart[key] = int(cart[key]) - 1
+            if cart[key] <= 0:
+                del cart[key]
+            _save(session)
+            return
+    else:
+        
+        prefix = f"{int(photo_id)}:"
+        for k in list(cart.keys()):
+            if k.startswith(prefix):
+                cart[k] = int(cart[k]) - 1
+                if cart[k] <= 0:
+                    del cart[k]
+                _save(session)
+                return
+
+def remove(session, photo_id, variant=None):
+
+    cart = _cart(session)
+    if variant:
+        key = _key(photo_id, variant)
+        cart.pop(key, None)
+    else:
+        prefix = f"{int(photo_id)}:"
+        for k in [k for k in cart.keys() if k.startswith(prefix)]:
+            del cart[k]
+    _save(session)
 
 def clear(session):
-    session.pop(CART_KEY, None)
-    session.modified = True
+    session["cart"] = {}
+    _save(session)
