@@ -2,6 +2,7 @@
 from gallery.models import Photo
 from .models import Order, OrderItem
 
+
 def create_order_from_session(user, session):
     cart = session.get('cart', {})
     if not cart:

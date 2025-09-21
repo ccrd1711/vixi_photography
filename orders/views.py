@@ -49,7 +49,8 @@ def add_to_cart(request, photo_id):
     sc.add(request.session, photo_id, qty=1, variant=variant)
     photo = get_object_or_404(Photo, pk=photo_id)
     label = "B&W" if variant == "bw" else "CLR"
-    messages.success(request, f"Added {photo.title or 'photo'} ({label}) to basket.")
+    messages.success(
+        request, f"Added {photo.title or 'photo'} ({label}) to basket.")
     return redirect(request.POST.get("next") or "cart")
 
 
@@ -58,6 +59,7 @@ def remove_one(request, photo_id):
     sc.remove_one(request.session, photo_id, variant=variant)
     messages.info(request, "Removed one item from basket.")
     return redirect("cart")
+
 
 def remove_from_cart(request, photo_id):
     variant = request.GET.get("v")  # optional ?v=bw
@@ -94,12 +96,16 @@ def checkout(request):
         success_url=request.build_absolute_uri(reverse('checkout_success')),
         cancel_url=request.build_absolute_uri(reverse('checkout_cancel')),
     )
-    return redirect(session.url, code=303)
+    r
+    eturn redirect(session.url, code=303)
+
 
 @login_required(login_url='/accounts/login/')
 def checkout_success(request):
     if request.user.is_authenticated:
-        latest = Order.objects.filter(user=request.user, status='submitted').order_by('-created_at').first()
+        latest = Order.objects.filter(
+            user=request.user,
+            status='submitted').order_by('-created_at').first()
         if latest:
             latest.status = 'paid'
             latest.save(update_fields=['status'])
@@ -109,7 +115,8 @@ def checkout_success(request):
 
 
 def checkout_cancel(request):
-    messages.info(request, "Payment cancelled. You can try again from your basket.")
+    messages.info(request,
+                  "Payment cancelled. You can try again from your basket.")
     return render(request, "orders/cancel.html")
 
 
@@ -121,28 +128,52 @@ def book_request(request):
             br = form.save(commit=False)
             br.user = request.user
             br.save()
-            messages.success(request, "Booking request submitted. A £50 deposit is required.")
+            messages.success(
+                request,
+                "Booking request submitted. A £50 deposit is required.",
+            )
             return redirect("booking_deposit_checkout", pk=br.pk)
     else:
         form = BookingRequestForm()
-    return render(request, "orders/booking_form.html", {"form": form, "mode": "create"})
+    return render(
+        request,
+        "orders/booking_form.html",
+        {"form": form, "mode": "create"},
+    )
+
 
 @login_required
 def booking_deposit_checkout(request, pk):
-    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    br = get_object_or_404(
+        BookingRequest,
+        pk=pk,
+        user=request.user,
+        status__in=["new", "review"],
+    )
     session = stripe.checkout.Session.create(
         mode="payment",
         payment_method_types=["card"],
-        line_items=[{
-            "price_data": {
-                "currency": "gbp",
-                "product_data": {"name": f"Booking deposit • {br.event_date} • {br.location}"},
-                "unit_amount": br.deposit_pence,
-            },
-            "quantity": 1,
-        }],
-        success_url=request.build_absolute_uri(reverse("booking_deposit_success", args=[br.pk])),
-        cancel_url=request.build_absolute_uri(reverse("booking_deposit_cancel", args=[br.pk])),
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "gbp",
+                    "product_data": {
+                        "name": (
+                            f"Booking deposit • {br.event_date} • "
+                            f"{br.location}"
+                        )
+                    },
+                    "unit_amount": br.deposit_pence,
+                },
+                "quantity": 1,
+            }
+        ],
+        success_url=request.build_absolute_uri(
+            reverse("booking_deposit_success", args=[br.pk])
+        ),
+        cancel_url=request.build_absolute_uri(
+            reverse("booking_deposit_cancel", args=[br.pk])
+        ),
     )
     br.stripe_session_id = session.id
     br.save(update_fields=["stripe_session_id"])
@@ -155,21 +186,31 @@ def booking_deposit_success(request, pk):
     if not br.deposit_paid:
         br.deposit_paid = True
         br.save(update_fields=["deposit_paid"])
-    messages.success(request, "Deposit paid. Thanks! We’ll be in touch to confirm details.")
+    messages.success(
+        request,
+        "Deposit paid. Thanks! We’ll be in touch to confirm details.",
+    )
     return redirect("my_bookings")
 
 
 @login_required
 def booking_deposit_cancel(request, pk):
     br = get_object_or_404(BookingRequest, pk=pk, user=request.user)
-    messages.info(request, "Deposit payment cancelled. You can try again from My Bookings.")
+    messages.info(
+        request,
+        "Deposit payment cancelled. You can try again from My Bookings.",
+    )
     return redirect("my_bookings")
 
 
 @login_required
 def my_bookings(request):
     bookings = BookingRequest.objects.filter(user=request.user)
-    return render(request, "orders/my_bookings.html", {"bookings": bookings})
+    return render(
+        request,
+        "orders/my_bookings.html",
+        {"bookings": bookings},
+    )
 
 
 @login_required
@@ -178,7 +219,7 @@ def edit_booking(request, pk):
         BookingRequest,
         pk=pk,
         user=request.user,
-        status__in=["new", "review"]
+        status__in=["new", "review"],
     )
     if request.method == "POST":
         form = BookingRequestForm(request.POST, instance=br)
@@ -189,33 +230,62 @@ def edit_booking(request, pk):
     else:
         form = BookingRequestForm(instance=br)
 
-    return render(request, "orders/booking_form.html", {"form": form, "mode": "edit"})
+    return render(
+        request,
+        "orders/booking_form.html",
+        {"form": form, "mode": "edit"},
+    )
 
 
 @login_required
 def delete_booking(request, pk):
-    br = get_object_or_404(BookingRequest, pk=pk, user=request.user, status__in=["new", "review"])
+    br = get_object_or_404(
+        BookingRequest,
+        pk=pk,
+        user=request.user,
+        status__in=["new", "review"],
+    )
     if request.method == "POST":
         br.status = "cancelled"
         br.save(update_fields=["status"])
         if br.deposit_paid:
-            messages.info(request, "Booking request cancelled. Your deposit refund will be processed in 3–5 days.")
+            messages.info(
+                request,
+                "Booking request cancelled. Your deposit refund will be "
+                "processed in 3–5 days.",
+            )
         else:
             messages.info(request, "Booking request cancelled.")
         return redirect("my_bookings")
-    return render(request, "orders/booking_confirm_delete.html", {"booking": br})
+    return render(
+        request,
+        "orders/booking_confirm_delete.html",
+        {"booking": br},
+    )
 
 
 @login_required
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at').prefetch_related("items", "items__photo")
-    return render(request, "orders/my_orders.html", {"orders": orders})
+    orders = (
+        Order.objects.filter(user=request.user)
+        .order_by('-created_at')
+        .prefetch_related("items", "items__photo")
+    )
+    return render(
+        request,
+        "orders/my_orders.html",
+        {"orders": orders},
+    )
 
 
 @login_required
 def download_item(request, item_id: int):
     # Try to fetch the order item
-    item = OrderItem.objects.select_related("order", "photo").filter(pk=item_id).first()
+    item = (
+        OrderItem.objects.select_related("order", "photo")
+        .filter(pk=item_id)
+        .first()
+    )
     if not item:
         messages.error(request, "That download could not be found.")
         return redirect("my_orders")
@@ -224,11 +294,18 @@ def download_item(request, item_id: int):
     if item.order.user_id != request.user.id:
         return HttpResponseForbidden("Not your order.")
     if item.order.status != "paid":
-        messages.error(request, "Downloads are available after payment.")
+        messages.error(
+            request,
+            "Downloads are available after payment.",
+        )
         return redirect("my_orders")
 
     # Choose download URL by variant
-    url = item.photo.download_url_bw if item.variant == "bw" else item.photo.download_url
+    url = (
+        item.photo.download_url_bw
+        if item.variant == "bw"
+        else item.photo.download_url
+    )
     if not url:
         messages.error(request, "Download unavailable for this item.")
         return redirect("my_orders")
