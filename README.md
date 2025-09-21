@@ -1,6 +1,6 @@
 # VIXI Photography website README.md
 
-![The Vixi Website amiresponsive image](/docs/images/amiresponsive-shack.png)
+![The Vixi Website amiresponsive image](/docs/images/features/amiresponsive-vixi.png)
 
 The live Vixi Photography site can be viewed [here](https://vixi-photography-98e8a4e90f4d.herokuapp.com/)
 
@@ -210,10 +210,38 @@ Here is a Flow Diagram for the Admin/Superuser(s) of the site
 
 # Features 
 
+This section includes screenshots from the live site to show some of the interactive features to aid in the UX
+
+This screenshot below is of the nav the user is welcomed with on arrival. 
+
+![Home nav screenshot](/docs/images/features/feature-nav.png)
+
+This screenshot below shows the interactive basket running a total with the items added to the basket 
+
+![Basket screenshot](/docs/images/features/basket-feature.png)
+
+This screenshot below shows the options a user has in the dropdown for each print
+
+![Options screenshot](/docs/images/features/options-feature.png)
+
+These two screenshots show how the user can toggle easily between light and dark to see which type of print they'd like to purchase
+
+![Bright option s'hot](/docs/images/features/feature-bright.png)
+![Dark option s'hot](/docs/images/features/feature-dark.png)
 
 # Ideas going forward 
 
-While the current version of the site meets the core requirements, there is definite scope for growth...??? 
+While the current site provides a clean way to browse and purchase sports photography, there are several directions it could expand in the future:
+
+* Community features – allow users to leave comments and likes on individual photos, helping to surface the most popular shots.
+
+* Multiple galleries – expand beyond the initial collection to host separate galleries for different sports, events, or seasons.
+
+* User profiles – let users curate their own favourites, manage past orders more easily, and receive tailored recommendations.
+
+* Enhanced downloads – offer multiple resolutions or watermarked previews prior to purchase.
+
+* Booking enhancements – provide calendar integration and automated email confirmations for photographer bookings.
 
 # Technologies Used 
 
@@ -224,8 +252,9 @@ While the current version of the site meets the core requirements, there is defi
 - Python 
 - Django
 - SQL
+- Stripe 
 
-## External Programs or Libraries used (STRIPE?) 
+## External Programs or Libraries used 
 - VSCode for local development
 - PostgreSQL
 - [GoogleFonts](https://fonts.google.com/)

@@ -1,6 +1,6 @@
 # Space Shack on planet Phaedrus-1711 website Testing.md
 
-![The Space Shack Website amiresponsive image](/docs/images/amiresponsive-shack.png)
+![The Vixi Website amiresponsive image](/docs/images/features/amiresponsive-vixi.png)
 
 The README.md for this website can be found [here](/README.md).
 
@@ -14,7 +14,6 @@ The README.md for this website can be found [here](/README.md).
     * [User Stories](#user-stories)
     * [New Visitors](#new-visitors-to-the-site)
     * [Returning Visitors](#returning-visitors)
-    * [Fault Testing](#fault-finding)
 
 * [Bugs/Issues/Fixes](#bugsissuesfixes)
 
@@ -28,15 +27,15 @@ HTML validation was completed using [W3C Validator](https://validator.w3.org).
 
 ### CSS 
 
-CSS validation was completed using [the W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/validator), no errors were found. This one was completed as normal, by copying my CSS file input into the direct input box. 
+CSS validation was completed using [the W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/validator), no errors were found.
 
 ### Javascript 
 
-Javascript validation was completed using [JSHint](https://jshint.com/) and both files came back with no errors found.
+Javascript validation was completed using [JSHint](https://jshint.com/) and all files came back with no errors found.
 
 ### Python
 
-Python PEP8 compliance testing and validation was completed using [the CI Python Linter](https://pep8ci.herokuapp.com). Every single .py file was input on 9/6 after reaching a point in development where likely no more changes were to be made apart from comments. All files were amended and are now compliant with no errors. 
+Python PEP8 compliance testing and validation was completed using [the CI Python Linter](https://pep8ci.herokuapp.com). Every single .py file was input on 9/6 after reaching a point in development where likely no more changes were to be made apart from comments. All files were amended and are now compliant with no errors.
 
 Update: Another .py file run for validation was done on 11/6 due to changes made in the code with 500 errors found. These are now rectified and all .py files passed validation. 
 
@@ -60,52 +59,21 @@ Here are the reports I got from running Lighthouse reports on desktop and mobile
 
 | Goal | How is it achieved? | Pass or Fail | 
 | --- | :---: | ---: |
-|As a new visitor I want to gain an understanding of what Phaedrus-1711 and the Space Shack experience offers, through an immersive landing page and rich descriptions. | The user is welcomed by a vibrant and cosy-feeling landing page and the About page provides more immersive information on their potential stay at the Shack.| Pass 
-|As a new visitor I want to successfully navigate the site to explore reviews and comments from previous “guests.” | All users are able to *view* the reviews, and can see who it was written by, the content and star rating.| Pass 
-|As a new visitor I want to register for an account to become part of the interplanetary travel community.| Continuing on from the previous story, users can go one further and register which allows them full interactivity and can leave comments and like reviews.| Pass
-|As a new visitor I want to make a (rather expensive) booking securely and then be able to leave my own reviews.| You are not able to leave a review or book the Shack on the site without being logged in. The form is fully interactive so that it will snuff out typo errors on email fields, and avoids double bookings.| Pass
-|As a new visitor I want to make sure I can follow this accommodation in other ways so that I can get updates from elsewhere.| There are social media icons along the bottom of every page to take the user to relevant social channels for updates.| Pass 
+|As a new visitor I want to gain a clear understanding of what Vixi Photography offers through a visually striking landing page and simple navigation. | Simplistic design with bold features signalling the sites purpose and ways of navigation | Pass 
+|As a new visitor I want to browse the photography gallery so that I can explore the style and quality of work before making a decision.| Two links to the Gallery on the front page with a fading roulette to give a hint of what the gallery has to offer | Pass 
+|As a new visitor I want to register for an account so that I can unlock the ability to book sessions and purchase photographs.| Login button on home page which will automatically redirect you to register if you haven't done so already | Pass
+|As a new visitor I want to make a booking with the photographer securely so that I can reserve a photoshoot with confidence.| Login required to do this and aptly signalled on the About page- link to which is on the homepage | Pass
+|As a new visitor I want to find links to social media or external platforms so that I can follow the photographer and stay updated with new work. | There are social media icons along the bottom of every page to take the user to relevant social channels for updates.| Pass 
 
 ### Returning visitors to the site 
 
 | Goal | How is it achieved? | Pass or Fail | 
 | --- | :---: | ---: |
-|As a returning user I want to log in and out of their account securely.| Users have a login button brightly signposted in the nav bar, and a log out option in the dropdown under their username.| Pass 
-|As a returning user I want to submit, view, edit, or delete their own reviews and comments.| As mentioned above, this is a continuation. All submissions, views, edits and deletes have their own dedicated screens.| Pass 
-|As a returning user I want to enjoy a consistent and responsive user interface across devices, reinforcing a seamless and immersive space tourism experience.| The site is fully functional and responsive on all screen sizes and is designed for ease of navigation| Pass 
-|As a returning user I want to enjoy navigating through the site on mobile as well as desktop.| There is an accessible and well highlighted dropdown to take you to all elements of the site plus an icon in the top left to take you to the index page quicker.| Pass
-|As a returning user I want to view and manage my upcoming bookings, so I can keep track of my interplanetary travel plans with ease.| In the dropdown under the user name is a section for My Bookings where any booked trips can be removed or amended as necessary| Pass 
-
-## Fault Testing 
-
-This section is dedicated to showing visually how some of the Error 500's have been rectified and what they show instead of breaking the site and showing an error. Most of these were found through the Booking form as that's arguably the heaviest section of user interaction. 
-
-The screenshot below shows what happens when a user attempts to submit a comment containing only whitespace (in this case, under a particularly harsh review!).
-Previously, these inputs were incorrectly accepted but not displayed — and no error message was shown to the user, which led to poor user experience.
-Now, both review and comment submissions strip whitespace and validate properly. If the input is empty after trimming, a user-friendly warning is shown instead of triggering a server error. This also extends to the edit comment page. 
-
-![Screenshot of whitespace in comments section](/docs/images/tests/whitespace-comments.jpg)
-
-Below are 5 screenshots all relating to errors I had found within the booking form and were subsequently fixed (please see [bugs](#bugsissuesfixes)). 
-
-Despite setting initial parameters, my code did not sufficiently prevent all booking-related faults. During testing, I discovered that unvalidated users could submit bookings with:
-
-- Incorrectly formatted email addresses
-- Stay durations longer than intended
-- Guest numbers exceeding the 2-person limit
-- Stays that begun in the past, or when the check-in date was after the check-out date
-
-Each of these issues caused the site to break or behave unexpectedly. Validation checks were added to address these problems and ensure user input meets all booking requirements.These screenshots provide additional contextual proof that these issues are now dealt with and hopefully should no longer be an issue on the site. 
-
-![Screenshot of booking error number 1](/docs/images/tests/forms-validation-1.jpg)
-
-![Screenshot of booking error number 2](/docs/images/tests/forms-validation-2.jpg)
-
-![Screenshot of booking error number 3](/docs/images/tests/forms-validation-3.jpg)
-
-![Screenshot of booking error number 4](/docs/images/tests/forms-validation-4.jpg)
-
-![Screenshot of booking error number 5](/docs/images/tests/forms-validation-5.png)
+|As a returning user I want to log in and out of my account securely so that my personal details and activity are protected.| Login and logout securely managed and highlighted in top right whether you are logged in or out | Pass 
+|As a returning user I want to make, edit, or cancel bookings so that I can manage my upcoming photography sessions easily.| All possible starting with the initial booking on the about page link, followed by all amendments in the My Bookings section | Pass 
+|As a returning user I want to purchase or download photos so that I can access images immediately after completing a transaction.| All prints purchases are 'gifted' with immediate access to a digital copy of the same image | Pass 
+|As a returning user I want to update my profile details so that my stored information remains accurate and up to date.| Possible to update and amend these in the Profile section, along with the ability to delete your account | Pass
+|As a returning user I want to enjoy a consistent and responsive interface across devices so that I can navigate smoothly on both desktop and mobile.| Works responsively on devices and maintains uniformity of design throughout | Pass 
 
 # Bugs/Issues/Fixes
 
