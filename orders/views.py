@@ -96,8 +96,7 @@ def checkout(request):
         success_url=request.build_absolute_uri(reverse('checkout_success')),
         cancel_url=request.build_absolute_uri(reverse('checkout_cancel')),
     )
-    r
-    eturn redirect(session.url, code=303)
+    return redirect(session.url, code=303)
 
 
 @login_required(login_url='/accounts/login/')
@@ -290,7 +289,6 @@ def download_item(request, item_id: int):
         messages.error(request, "That download could not be found.")
         return redirect("my_orders")
 
-    # Ownership + status checks
     if item.order.user_id != request.user.id:
         return HttpResponseForbidden("Not your order.")
     if item.order.status != "paid":
@@ -300,7 +298,6 @@ def download_item(request, item_id: int):
         )
         return redirect("my_orders")
 
-    # Choose download URL by variant
     url = (
         item.photo.download_url_bw
         if item.variant == "bw"
