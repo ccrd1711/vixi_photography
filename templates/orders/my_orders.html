@@ -21,7 +21,7 @@
             <td>{{ item.qty }}</td>
             <td>{{ item.subtotal_display }}</td>
             <td>
-              <a href="{% url 'orderitem_download' item.id %}" target="_blank" rel="noopener">Download</a>
+              <a href="{% url 'download_item' item.id %}" target="_blank" rel="noopener">Download</a>
             </td>
           </tr>
         {% endfor %}
