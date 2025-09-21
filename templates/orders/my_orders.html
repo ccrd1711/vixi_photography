@@ -26,22 +26,20 @@
             <td class="t-center">{{ item.qty }}</td>
             <td class="t-right">{{ item.subtotal_display }}</td>
             <td class="t-right">
-        {% if o.status == "paid" %}
-          {% if item.variant == "bw" and item.photo.download_path_bw %}
-            <a class="btn" href="{% static item.photo.download_path_bw %}" download>
-              Download (B&W)
-            </a>
-          {% elif item.photo.download_path %}
-            <a class="btn" href="{% static item.photo.download_path %}" download>
-              Download (Colour)
-            </a>
-          {% else %}
-            —
-          {% endif %}
-        {% else %}
-          —
-        {% endif %}
-      </td>
+              {% if o.status == "paid" %}
+                {% with dl=item.photo.download_url_for:item.variant %}
+                  {% if dl %}
+                    <a class="btn" href="{{ dl }}" download>
+                      Download ({{ item.get_variant_display }})
+                    </a>
+                  {% else %}
+                    —
+                  {% endif %}
+                {% endwith %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
